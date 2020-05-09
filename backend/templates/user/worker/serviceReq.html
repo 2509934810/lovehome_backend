@@ -1,0 +1,54 @@
+{% extends 'user/worker/base.html' %}
+
+{% block title %}
+    <title>我的信息</title>
+{% endblock %}
+
+{% block extraStyle %}
+    <style>
+        body{background-color: gray;}
+        .Main .MainShow .myservice{width: 40%; margin: 0 auto; border: 1px solid lightcoral;}
+        .Main .MainShow .myservice form{width: 100%;}
+        .Main .MainShow .myservice form .inputdata{display: grid; grid-template-columns: repeat(12, 1fr);margin-top: 10px; font-size: 20px;}
+        .Main .MainShow .myservice form .inputdata label{grid-column-start: 1; grid-column-end: 4;}
+        .Main .MainShow .myservice form .inputdata input{grid-column-start: 5; grid-column-end: 12;}
+        .Main .MainShow .myservice form .inputdata select{grid-column-start: 5; grid-column-end: 12;}
+
+        .Main .MainShow .myservice form .btn{margin-top: 20px;}
+        .Main .MainShow .myservice form .btn input{width: 40%; height: 28px; background-color: aqua; margin: 0 auto; display: block;}
+    </style>
+{% endblock %}
+{% block mainshow %}
+            <!-- <div> -->
+                <!-- 添加服务管理 申请，删除，申请服务类型
+                管理员同意 即可发布  -->
+<div class="myservice">
+    <form method="POST" enctype="multipart/form-data">
+        <div class="inputdata">
+            <label>账号</label>
+            <input type="text" value="[[user.account]]" name="account" readonly>
+        </div>
+        <div  class="inputdata">
+            <label>用户名</label>
+            <input type="text" value="[[user.username]]" name="username" readonly>
+        </div>
+        <div class="inputdata">
+            <label>头像</label>
+            <input type="file" name="upload">
+        </div>
+        <div  class="inputdata">
+            <label>服务类型</label>
+            <select name="serviceType">
+                <option value="yuesao">月嫂</option>
+                <option value="xiaoshi">小时工</option>
+                <option value="baomu">保姆</option>
+                <!-- <option value="">月嫂</option> -->
+            </select>
+        </div>
+        <div class="btn">
+            <input type="submit" value="提交">
+        </div>
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'admin/base.html' %}
+
+{% block style %}
+    <style>
+        .topBar{width: 80%; margin: 0 auto; display: grid;
+            grid-template-columns: repeat(12, 1fr); margin-top: 5px;}
+        .topBar input{grid-column-start: 3; grid-column-end: 6; height: 30px; font-size: 26px;}
+        .topBar button:nth-child(0){grid-column-start: 7; grid-column-end: 8; height: 30px;}
+        .topBar button:nth-child(1){grid-column-start: 9; grid-column-end: 10; height: 30px;}
+
+        .manShow{width: 70%; margin: 0 auto; margin-right: 10%; border: 1px solid lightgray;}
+        .manShow table{width: 100%; display: block; margin-top: 20px;}
+        .manShow table tr{margin-top: 10px;}
+        .manShow table tr td{width: 27%;}
+        .manShow table tr td a{display: block; width: 80%; background-color: aqua; text-align: center; padding: 1px;}
+        .manShow table tr td a:hover{cursor: pointer;}
+        .manShow .worker{width: 98%; margin: 0 auto; border: 1px solid lightgray; margin-top: 20px;}
+        .manShow .numcount span{text-align: center; display: block; margin-top: 10px;}
+        .manShow .worker ul li{display: inline-block; margin-left: 3%;height: 30px; display: block; line-height: 30px;}
+        .manShow .numcount ul li{display: inline; margin-left: 3%;height: 30px; display: block; line-height: 30px;}
+        /* .clearw:after{content: ''; clear: both; display: block; width: 30%;} */
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="topBar">
+        <input type="text">
+        <button>搜索</button>
+        <button>分配</button>
+    </div>
+    <div class="manShow">
+        <table>
+            <tr>
+                <td>总监 ：</td>
+                {% for man in midMan %}
+                <td><a href="[[url_for('admin.manage', manId=man.account)]]">[[man.username]]-[[man.account[-4:]]]</a></td>
+                {% endfor %}
+            </tr>
+            <tr>
+                <td>经理 ：</td>
+                {% for man in lowMan %}
+                <td><a href="[[url_for('admin.manage', lowId=man.account)]]">[[man.username]]-[[man.account[-4:]]]</a></td>
+                {% endfor %}
+            </tr>
+        </table>
+        <div class="numcount">
+            <span>管理员工人数</span>
+        </div>
+        <div class="worker">
+            <ul>
+                {% for man in worker %}
+                    <li><a>[[man.username]]-[[man.account[-4:]]]</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="numcount">
+            <span >线下员工人数</span>
+        </div>
+        <div class="worker">
+            <ul>
+                {% for man in lineWorker %}
+                    <li><a>[[man.username]]-[[man.account[-4:]]]</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

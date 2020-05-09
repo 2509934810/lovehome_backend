@@ -1,0 +1,15 @@
+{% extends 'admin/base.html' %}
+
+{% block style %}
+    <style>
+        .topBar{width: 80%; margin: 0 auto; display: grid;
+            grid-template-columns: repeat(12, 1fr); margin-top: 5px;}
+        .topBar input{grid-column-start: 3; grid-column-end: 6; height: 30px; font-size: 26px;}
+        .topBar button:nth-child(0){grid-column-start: 7; grid-column-end: 8; height: 30px;}
+        .topBar button:nth-child(1){grid-column-start: 9; grid-column-end: 10; height: 30px;}
+        /* .MainView{} */
+        </style>
+{% endblock %}
+
+{% block content %}
+{% endblock %}

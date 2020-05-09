@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %}
+   <title>
+       登陆
+   </title>
+{% endblock %}
+
+{% block style %}
+<style>
+    body{background-color: lightyellow;}
+    .container{overflow: hidden;}
+    .Form{width: 40%;background-color: lightsalmon; position: relative; margin:0 auto;
+        margin-top: 100px; border-radius: 30px; overflow: hidden;}
+    .Form div{margin-top: 30px; font-family: Arial, Helvetica, sans-serif; font-weight: bold; display: grid;
+            grid-template-columns: repeat(12, 1fr);}
+    .Form label{grid-column-start: 1; grid-column-end: 4; line-height: 30px; margin: 0 auto;}
+    .Form input{grid-column-start: 5; grid-column-end: 11; height: 30px;}
+    .Form button{width: 40%;display: block; height: 28px;background-color: aqua; margin: 0 auto; margin-top: 20px;}
+    .Form button:hover{border: 1px solid blue;;}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="Form">
+      <form method="POST" id="myform">
+        <div class="account">
+          <label for="account">账号:</label>
+          <input type="text" name="account" id="account" autocomplete="off">
+          <!-- <span>error</span> -->
+        </div>
+        <div class="password">
+          <label for="password">密码:</label>
+          <input type="password" name="password" id="password" autocomplete="off">
+        </div>
+        <button type="submit" id="confirmButton">登陆</button>
+        <button type="reset" id="resetButton">reset</button>
+      </form>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+  var account = $("#account").val();
+  var username = $("#username").val();
+  var password = $("#password").val();
+  // while(account== '' || username == '' || password==''){
+  //   $('#confirmButton').attr("disabled", true);
+  // }
+  $("#myform").validate({
+    rules: {
+      account: "required",
+    }
+  })
+  $("#account").focusout(function(){
+    var account = $("#account").val();
+    if (account != ""){
+      $("#account").attr("disabled", true);
+      $("#")
+      console.log("acn");
+    }
+  })
+</script>
+{% endblock %}

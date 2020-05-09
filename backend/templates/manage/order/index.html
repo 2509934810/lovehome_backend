@@ -1,0 +1,95 @@
+{% extends 'manage/order/base.html' %}
+{% block mainshow %}
+    <div class="tableShow">
+        <table>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>员工账号</td>
+                <td>服务类型</td>
+                <td>服务创建时间</td>
+                <td>计划开始时间</td>
+                <td>服务地点</td>
+                <td>服务薪资</td>
+                <td>客户账号</td>
+                <td>客户联系方式</td>
+                <td>订单状态</td>
+                <td>须支付</td>
+                {% if g.user.level > 8 %}
+                    <td>操作栏</td>
+                {% endif %}
+            </tr>
+            {% for order in orders %}
+                <tr>
+                    <td><input name="checkorder" value="[[order.id]]" type="checkbox"></td>
+                    <td>[[order.info.lovelineworker.userAc]]</td>
+                    {% if order.info.serviceType == 1 %}
+                        <td>月嫂</td>
+                    {% elif order.info.serviceType == 2 %}
+                        <td>小时工</td>
+                    {% elif order.info.serviceType == 4 %}
+                        <td>保姆</td>
+                    {% else %}
+                        <td>[[order.info.serviceType]]</td>
+                    {% endif %}
+                    <td>[[order.createTime]]</td>
+                    <td>[[order.preStartTime]]</td>
+                    <td>[[order.ServiceAddr]]</td>
+                    <td>[[order.salary]]/单位</td>
+                    <td>[[order.baseuser.userAc]]</td>
+                    <td>[[order.baseuser.user.telephone]]</td>
+                    {% if order.orderType == 1 %}
+                    <td><a href="[[url_for('manage.activeOrder', id=order.id)]]">激活</a></td>
+                    {% elif order.orderType == 2 %}
+                    <td>已处理</td>
+                    {% elif order.orderType == 4 %}
+                    <td>正在进行中</td>
+                    {% elif order.orderType == 8 %}
+                    <td>结束</td>
+                    {% elif order.orderType == 16 %}
+                    <td>未支付</td>
+                    {% elif order.orderType == 32 %}
+                    <td>已支付</td>
+                    {% else %}
+                    <td>已激活</td>
+                    {% endif %}
+                    <td>[[order.salary]]</td>
+                    {% if g.user.level > 8 %}
+                        <td><a href="[[url_for('manage.orderResearch', id=order.id)]]">回访</a></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(document).ready(function(){
+            $("#printorder").on("click", function(){
+                var orders = document.getElementsByName("checkorder");
+                var orderList = []
+                for (var i=0; i < orders.length; i++){
+                    if (orders[i].checked){
+                        orderList.push(orders[i])
+                    }
+                }
+                if (orderList.length !== 1){
+                    alert("不合理操作")
+                }else{
+                    var order = orderList[0].value;
+                    // console.log(order)
+                    var BaseUrl = location.protocol + "//" + location.host + "/manage/order/"+ order + "/print";
+                    axios({
+                        method: 'get',
+                        url: BaseUrl,
+                    }).then(function(rsp){
+                        if (rsp.data.code == 200){
+                            console.log(rsp.data.data)
+                            window.location.href = location.protocol + "//" + location.host + "/static" + "/img/" +"order/" +  rsp.data.data
+                        }
+                    })
+                }
+            })
+        })
+    </script>
+{% endblock %}

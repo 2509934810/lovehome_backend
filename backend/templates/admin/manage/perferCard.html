@@ -1,0 +1,61 @@
+{% extends 'admin/manage/base.html' %}
+
+{% block style %}
+<style>
+        .myservice{width: 80%; float: right; margin-right: 4%;}
+        .myservice table{width: 100%;  border-collapse: collapse; text-align: center;}
+</style>
+{% endblock %}
+{% block content %}
+    <!-- <div class="topBar">
+        <button></button>
+    </div> -->
+    <div class="myservice">
+        <table border="1">
+            <tr>
+                <td>
+                    帐号
+                </td>
+                <td>
+                    职位
+                </td>
+                <td>
+                    操作员数量
+                </td>
+                <td>
+                    员工数量
+                </td>
+                <td>
+                    认证服务数量
+                </td>
+                <td>
+                    优惠券数量
+                </td>
+                <td>优惠券总额</td>
+                <td>操作栏</td>
+            </tr>
+            <tr>
+                {% for rsp in rsps %}
+                <tr>
+                    <td>[[rsp.account]]</td>
+                    {% if rsp.level == 32 %}
+                        <td>总监</td>
+                    {% elif rsp.level ==16 %}
+                        <td>经理</td>
+                    {% else %}
+                        <td>[[rsp.level]]</td>
+                    {% endif %}
+                    <td>[[rsp.workerNum]]</td>
+                    <td>[[rsp.lineworkerNum]]</td>
+                    <td>[[rsp.serviceNum]]</td>
+                    <td>[[rsp.cardNum]]</td>
+                    <td>[[rsp.cardMNum]]</td>
+                    <td>
+                        <a href="[[url_for('admin.spreadperfreCard', id=rsp.account)]]">发放</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tr>
+        </table>
+    </div>
+{% endblock %}

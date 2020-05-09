@@ -1,0 +1,68 @@
+{% extends 'user/worker/base.html' %}
+
+{% block title %}
+    <title>我的信息</title>
+{% endblock %}
+
+{% block style %}
+    <style>
+        /* body{background-color: gray;} */
+        .Main{display: grid; grid-template-columns: repeat(12, 1fr);}
+        .Main .leftBar{grid-column-start: 1; grid-column-end: 3;}
+        .Main .leftBar ul{margin-top: 20px; width: 80%; margin: 0 auto; height: 400px;  background-color: lightskyblue;}
+        .Main .leftBar ul li {width: 100%; height: 28px; text-align: center; margin-top: 10px;}
+        .Main .leftBar ul li a{display: block; width: 97%; height: 98%; padding: 1px; background-color: lightseagreen;}
+        .Main .leftBar ul li a:hover{border: 1px solid blue; cursor: pointer;}
+        .Main .MainShow{grid-column-start: 4; grid-column-end: 12; margin-top: 5px;}
+        .Main .MainShow .comBar{line-height: 30px; margin-top: 5px; margin-bottom: 5px;}
+        .Main .MainShow .comBar .btnGroup ul li{float: left; margin-left: 5%; }
+        .Main .MainShow .comBar .btnGroup ul li a:hover{cursor: pointer;}
+        .Main .MainShow .myservice table{width: 100%; border-collapse: collapse; margin-top: 10px;}
+        .Main .MainShow .myservice table td{width: 10%;}
+    </style>
+{% endblock %}
+{% block mainshow %}
+            <!-- <div> -->
+                <!-- 添加服务管理 申请，删除，申请服务类型
+                管理员同意 即可发布  -->
+            <div class="myservice">
+                <!-- {for service in services} -->
+                {% for service in serviceInfo %}
+                <table>
+                    <tr>
+                        <td colspan="2" rowspan="2">
+                            <img src="[[url_for('static', filename=service.head_photo)]]" alt="我的头像" width="95%" height="80px">
+                        </td>
+                        <td>
+                            账号
+                        </td>
+                        <td>用户名</td>
+                        <td>服务类型</td>
+                        <td>平均薪水</td>
+                        <!-- <td>预计价格</td> -->
+                        <td>服务地点</td>
+                        <td>许可</td>
+                        <!-- <td>客户方式</td> -->
+                    </tr>
+                    <tr>
+                        <td>[[user.account]]</td>
+                        <!-- <td>111111111111111111</td> -->
+                        <td>[[user.username]]</td>
+                        {% if service.serviceType == 1 %}
+                            <td>月嫂</td>
+                        {% elif service.serviceType == 2 %}
+                            <td>小时工</td>
+                        {% elif service.serviceType == 4 %}
+                            <td>保姆</td>
+                        {% else %}
+                            <td>[[service.serviceType]]</td>
+                        {% endif %}
+                        <td>[[service.avg_salary]]</td>
+                        <td>[[service.live_addr]]</td>
+                        <td>[[service.access]]</td>
+                        <!-- <td>12686587515</td> -->
+                    </tr>
+                </table>
+                {% endfor %}
+            </div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'user/worker/base.html' %}
+{% block extraStyle %}
+    <style>
+        .extraBtn{width: 20%; margin: 0 auto; height: 30px;}
+        .extraBtn a{display: block; width: 98%; height: 28px;background-color: aqua;text-align: center; line-height: 28px;}
+        .extraBtn a:hover{border: 1px solid blue; cursor: pointer;}
+    </style>
+{% endblock %}
+{% block mainshow %}
+<div class="myservice">
+    <!-- {for service in services} -->
+    {% for order in orders %}
+        <table>
+            <tr>
+                <td colspan="2" rowspan="2">
+                    <img src="[[url_for('static', filename=order.info.head_photo)]]" alt="我的头像" width="95%" height="80px">
+                </td>
+                <td>
+                    订单号
+                </td>
+                <td>状态</td>
+                <td>服务类型</td>
+                <td>开始时间</td>
+                <!-- <td>预计价格</td> -->
+                <td>服务地点</td>
+                <!-- <td>服务时间</td> -->
+                <td>客户方式</td>
+                <td>客户账号</td>
+                <td>客户名称</td>
+            </tr>
+            <tr>
+                <td>[[order.id[:10]]]</td>
+                <!-- <td>111111111111111111</td> -->
+                {% if order.orderType == 1 %}
+                    <td><a >激活</a></td>
+                {% elif order.orderType == 2 %}
+                    <td>正在派遣中</td>
+                {% elif order.orderType == 4 %}
+                    <td>正在进行中</td>
+                {% elif order.orderType == 8 or order.orderType == 16 %}
+                    <td>已结束，未支付</td>
+                {% elif order.orderType == 32 %}
+                    <td>已支付</td>
+                {% else %}
+                    <td>[[order.orderType]]</td>
+                {% endif %}
+                {% if order.info.serviceType == 1 %}
+                    <td>月嫂</td>
+                {% elif order.info.serviceType == 2 %}
+                    <td>小时工</td>
+                {% elif order.info.serviceType == 4 %}
+                    <td>保姆</td>
+                {% else %}
+                    <td>[[order.info.serviceType]]</td>
+                {% endif %}
+                <td>[[order.preStartTime]]</td>
+                <td>[[order.ServiceAddr]]</td>
+                <td>[[order.baseuser.user.telephone]]</td>
+                <td>[[order.baseuser.userAc]]</td>
+                <td>[[order.baseuser.user.username]]</td>
+                <!-- <td>12686587515</td> -->
+            </tr>
+            <tr>
+            </tr>
+        </table>
+        <div class="">
+            <span style="color: blue;">评论</span>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

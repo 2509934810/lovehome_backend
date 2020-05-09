@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block style %}
+    <style>
+        /* .Main{} */
+        .Main .confirmForm{width: 40%; margin: 0 auto; height: 60vh; background-color: pink;}
+        .Main .confirmForm .innerForm{width: 90%; margin: 0 auto; margin-top: 20px;}
+        .Main .confirmForm form {}
+        .Main .confirmForm form .inputdata{display: grid; grid-template-columns: repeat(12, 1fr); margin-top: 10px; font-size: 20px;}
+        .Main .confirmForm form .inputdata label{grid-column-start: 1; grid-column-end: 4; text-align: center;}
+        .Main .confirmForm form .inputdata input{grid-column-start: 4; grid-column-end: 12;}
+        .Main .confirmForm form .inputdata .sex{grid-column-start: 4; grid-column-end: 12;}
+        .Main .confirmForm form .inputdata .province{grid-column-start: 4; grid-column-end: 6;}
+        .Main .confirmForm form .inputdata .city{grid-column-start: 7; grid-column-end: 9;}
+        .Main .confirmForm form .submitdata{margin-top: 10px;}
+        .Main .confirmForm form .submitdata input{width: 30%; margin: 0 auto; display: block;}
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="Main container">
+        <div class="confirmForm">
+            <div class="innerForm">
+                <h2 style="text-align: center; line-height: 30px;">激活你的用户</h2>
+                <form method="POST">
+                    <div class="inputdata">
+                        <label>
+                            名称
+                        </label>
+                        <input type="text" name="username" placeholder="[[user.username]]">
+                    </div>
+                    <div class="inputdata">
+                        <label>
+                            账号
+                        </label>
+                        <input type="text" value="[[user.account]]" readonly>
+                    </div>
+                    <div class="inputdata">
+                        <label>
+                            性别
+                        </label>
+                        <select name="sex" class="sex">
+                            <option value="1">男</option>
+                            <option value="2">女</option>
+                        </select>
+                    </div>
+                    <div class="inputdata">
+                        <label>
+                            年龄
+                        </label>
+                        <input type="number" min="0" max="100" name="age" value=[[user.age]]>
+                    </div>
+                    <div class="inputdata" id="addr">
+                        <label>
+                            住址
+                        </label>
+                        <select class="province" id="province" name="province">
+                            <option>Null</option>
+                            {% for province in provinces %}
+                                <option value="[[province]]">[[province]]</option>
+                            {% endfor %}
+                        </select>
+                        <select class="city" id="city">
+                            <option>市</option>
+                        </select>
+                    </div>
+                    <div class="inputdata">
+                        <label>
+                            手机号
+                        </label>
+                        <input type="tel" name="telephone">
+                    </div>
+                    <div class="inputdata">
+                        <label>
+                            邮箱
+                        </label>
+                        <input type="email" name="email">
+                    </div>
+                    <div class="submitdata">
+                        <input type="submit" value="提交">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        $(document).ready(function(){
+            var province = document.getElementById("province").value;
+            console.log(province)
+            $("#province").change(function(){
+                province = document.getElementById("province").value
+                axios({
+                    method: 'get',
+                    url: location.protocol + "//" + location.host + "/manage/api/" + province
+                }).then(function(rsp){
+                    if (rsp.data.code == 200){
+                        var citySelect = document.getElementById("city")
+                        citySelect.remove();
+                        var citySelect = document.createElement("select")
+                        citySelect.setAttribute("name", "city")
+                        citySelect.setAttribute("id", "city")
+                        citySelect.setAttribute("class", "city")
+                        citys = rsp.data.citys
+                        // var citySelect = document.getElementById("city").value
+                        // var citySelects = document.getElementById("city")
+                        // console.log(citySelect)
+                        for(var i =0; i < citys.length; i++){
+                            var option = document.createElement("option")
+                            option.setAttribute("value", citys[i])
+                            option.innerHTML = citys[i]
+                            citySelect.append(option)
+                        }
+                        $("#addr").append(citySelect)
+                    }
+                })
+            })
+        })
+    </script>
+{% endblock %}

@@ -1,0 +1,52 @@
+
+
+{% extends 'manage/base.html' %}
+
+{% block extrastyle %}
+    <style>
+        .mainshow table{width: 100%; border-collapse: collapse; margin-top: 10px;}
+        .mainshow table tr td{text-align: center;}
+    </style>
+{% endblock %}
+{% block mainshow %}
+    <div class="mainshow">
+        <div>
+            <span>总管理人数 : [[workersList|length + lineworkerList|length]]</span>
+            <table border="1">
+                <tr>
+                    <td colspan="3" style="text-align: center;">人员分布</td>
+                </tr>
+                <tr>
+                    <td>
+                        操作员数量
+                    </td>
+                    <td>
+                        员工数量
+                    </td>
+                    <td>
+                        订单数量
+                    </td>
+                </tr>
+                <tr>
+                    <td>[[workersList|length]]</td>
+                    <td>[[lineworkerList|length]]</td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <table border="1">
+                <tr>
+                    <td>月嫂数量</td>
+                    <td>小时工数量</td>
+                    <td>保姆数量</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+{% endblock %}

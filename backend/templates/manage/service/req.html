@@ -1,0 +1,64 @@
+{% extends 'manage/service/base.html' %}
+
+{% block extrastyle %}
+    <style>
+        #actived{display: block; width: 98%; height: 99%; background-color: brown; margin: 0 auto;padding: 1px;}
+        #actived:hover{border: 1px solid blue; cursor: pointer;}
+    </style>
+{% endblock %}
+{% block mainshow %}
+<div class="tableShow">
+    <table border="1" style="border-collapse: collapse;">
+        <tr>
+            <td colspan="2">用户ID</td>
+            <!-- <td>用户身份</td> -->
+            <td>联系方式</td>
+            <td>服务地点</td>
+            <td>服务类型</td>
+            <td>服务薪水</td>
+            <td>激活类型</td>
+        </tr>
+        {% for service in serviceReqList %}
+            <tr>
+                <td colspan="2">
+                    [[service.lovelineworker.userAc]]
+                </td>
+                <td>1231231214</td>
+                <td>[[service.live_addr]]</td>
+                {% if service.serviceType == 1 %}
+                    <td>月嫂</td>
+                {% elif service.serviceType == 2 %}
+                    <td>小时工</td>
+                {% elif service.serviceType == 4 %}
+                    <td>保姆</td>
+                {% else %}
+                    <td>[[service.serviceType]]</td>
+                {% endif %}
+                <td>[[service.avg_salary]]</td>
+                {% if service.access == false %}
+                <td><a id="actived" href="[[url_for('manage.actived', id=service.id)]]">激活</a></td>
+                {% else %}
+                <td>已激活</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        // $(document).ready(function(){
+        //     $("#actived").on("click", function(){
+        //         var id =
+        //         axios({
+        //             method: 'get',
+        //             url: '/service/actived',
+        //             data: {
+        //                 id:
+        //             }
+        //         })
+        //     })
+        // })
+    </script>
+{% endblock %}

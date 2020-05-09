@@ -1,0 +1,136 @@
+{% extends 'manage/base.html' %}
+
+{% block title %}
+<title>
+    管理_未分配员工
+</title>
+{% endblock %}
+
+{% block style %}
+    <style>
+        .Main{display: grid; grid-template-columns: repeat(12, 1fr);}
+        /* .Main .InnerCon{width: 90%;} */
+        .Main .leftbar{grid-column-start: 1; grid-column-end: 3;
+            background-color: lightskyblue;  height: 980px;}
+        .Main .leftbar ul{width: 80%; margin: 0 auto;  }
+        .Main .leftbar ul li{margin-top: 20px; text-align: center; background-color: aqua; height: 30px;}
+        .Main .leftbar ul li a{display: block; line-height: 30px; text-align: center; padding: 1px solid;}
+        .Main .leftbar ul li a:hover{border: 1px solid blue; cursor: pointer;}
+        .container{width: 95%; margin: 0 auto;}
+        .Main .MainShow{grid-column-start: 4; grid-column-end: 13; border: 1px solid lightcyan;}
+        .Main .MainShow .comBar{line-height: 30px; margin-top: 5px; margin-bottom: 5px;}
+        .Main .MainShow .comBar .btnGroup ul li{float: left; margin-left: 5%; }
+        .Main .MainShow .comBar .btnGroup ul li a:hover{cursor: pointer;}
+        .Main .MainShow .tableShow table{width: 96%; text-align: center; margin: 0 auto; border-collapse: collapse;}
+    </style>
+{% endblock %}
+{% block content %}
+<div class="Main container">
+    <!-- <div class="InnerCon"> -->
+    <div class="leftbar">
+        <ul>
+            <li><a href="[[url_for('manage.index')]]">员工管理</a></li>
+            <li><a href="[[url_for('manage.service')]]">服务管理</a></li>
+            <li><a>投诉信箱</a></li>
+            <li><a>聊天室</a></li>
+        </ul>
+    </div>
+    <div class="MainShow">
+        <div class="comBar clear">
+            <p class="l">管理</p>
+            <div class="btnGroup">
+                <ul>
+                    <li><a href="[[url_for('manage.index')]]">我的用户</a></li>
+                    {% if g.user.level > 8 %}
+                    <li><a href="[[url_for('manage.addUser')]]">添加用户</a></li>
+                    <li><a href="[[url_for('manage.userNotContro')]]">未分配</a></li>
+                    {% endif %}
+                    <!-- <li><a href="#">修改</a></li> -->
+                    <li><a id="deleteRel">删除</a></li>
+                    <li><a id="despread">分配</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="tableShow">
+            <table border="1">
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>员工ID</td>
+                    <td>员工姓名</td>
+                    <td>激活状态</td>
+                    <td>员工性别</td>
+                    <td>员工年龄</td>
+                    <td>员工住址</td>
+                    <td>员工地址</td>
+                    <td>服务地址</td>
+                </tr>
+                {% for worker in workers %}
+                    <tr>
+                        <td><input type="checkbox" id="[[worker.account]]" name="comfirmBox"></td>
+                        <td>[[worker.workerLink.first().id[:5]]]</td>
+                        <td>[[worker.username]]</td>
+                        <td>[[worker.actived]]</td>
+                        <td>[[worker.sex]]</td>
+                        <td>[[worker.age]]</td>
+                        <td>None</td>
+                        <td>None</td>
+                        <td>None</td>
+
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(document).ready(function(){
+            $("#despread").on('click', function(){
+                var checkList = document.getElementsByName("comfirmBox")
+                accountList = []
+                for (k in checkList){
+                    if (checkList[k].checked){
+                        console.log(checkList[k].id)
+                        accountList.push(checkList[k].id)
+                    }
+                }
+                console.log(accountList)
+                if (accountList.length == 1){
+                    axios({
+                    method: 'get',
+                    url: '/manage/despread?useraccount=' + accountList,
+                    }).then(function(res){
+                        if (res.data.code == 200){
+                            window.location.reload()
+                        }
+                    })
+                }
+            })
+            $("#deleteRel").on("click", function(){
+                var checkList = document.getElementsByName("comfirmBox")
+                accountList = []
+                for (k in checkList){
+                    if (checkList[k].checked){
+                        console.log(checkList[k].id)
+                        accountList.push(checkList[k].id)
+                    }
+                }
+                if (accountList.length > 1 || accountList.length <= 0){
+                    alert("非法操作")
+                }else{
+                    axios({
+                    method: 'get',
+                    url: '/manage/deleteRel?useraccount=' + accountList,
+                    }).then(function(res){
+                        if (res.data.code == 200){
+                            window.location.reload()
+                        }
+                    })
+                }
+            })
+        })
+    </script>
+{% endblock %}

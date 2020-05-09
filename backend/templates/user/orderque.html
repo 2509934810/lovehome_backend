@@ -1,0 +1,73 @@
+{% extends 'user/base.html' %}
+
+{% block extraStyle %}
+    <style>
+        body{background-color: lightgray;}
+        .myservice{width: 50%; height: 60vh; margin: 0 auto; background-color: lightsalmon; margin-top: 20px;}
+        .myservice h1{line-height: 30px; font-size: 24px; text-align: center;}
+        .myservice form{display: block ; margin-top: 20px;width: 80%; margin: 0 auto;}
+        .myservice form .inputdata{display: grid; grid-template-columns: repeat(12, 1fr); font-size: 20px; margin-top: 1vh;}
+        .myservice form .inputdata label{grid-column-start: 1; grid-column-end: 5;}
+        .myservice form .inputdata input{grid-column-start: 5; grid-column-end: 12;}
+        .myservice form .inputdata textarea{grid-column-start: 5; grid-column-end: 12;}
+        .myservice form .confirmBtn{margin-top: 20px;}
+        .myservice form .confirmBtn input{width: 40%; text-align: center; margin: 0 auto; display: block; height: 25px;}
+    </style>
+{% endblock %}
+{% block mainshow %}
+    <div class="myservice">
+        <!-- <div> -->
+            <h1>投诉</h1>
+        <!-- </div> -->
+        <form method="POST" onsubmit="validate();">
+            <div class="inputdata">
+                <label>
+                    订单ID
+                </label>
+                <input type="text" value="[[order.id]]" name="orderId" readonly>
+            </div>
+            <div class="inputdata">
+                <label>
+                    服务类型
+                </label>
+                {% if order.orderType == 1 %}
+                    <input type="text" value="[[order.orderType]]" name="orderType" readonly>
+                {% elif order.orderType == 2 %}
+                    <input type="text" value="[[order.orderType]]" name="orderType" readonly>
+                {% else %}
+                    <input type="text" value="[[order.orderType]]" name="orderType" readonly>
+                {% endif %}
+                </div>
+            <div class="inputdata">
+                <label>
+                    我的账号
+                </label>
+                <input type="text" value="[[order.baseuser.userAc]]" name="account"  readonly>
+            </div>
+            <div class="inputdata">
+                <label>
+                    投诉内容
+                </label>
+                <textarea rows="8" cols="20" name="orderBody" id="orderbody"></textarea>
+            </div>
+            <div class="confirmBtn">
+                <input type="submit" value="提交">
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block script %}\
+    <script>
+
+        $(document).ready(function(){
+            function validate(){
+                var orderbody = document.getElementById("orderbody")
+                console.log(orderbody.val());
+                // e.preventDefault();
+                return false;
+            }
+        })
+
+    </script>
+{% endblock %}

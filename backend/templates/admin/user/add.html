@@ -1,0 +1,43 @@
+{% extends 'admin/base.html' %}
+
+{% block style %}
+    <style>
+        body{background-color: gray; opacity: 0.4; z-index: 1;}
+        #addUser{width: 70%; height: 980px;}
+        #addUser form{margin: 100px auto;width: 40%;  z-index: 10;background-color: lightgreen;  margin: 0 auto; border-radius: 30px; border: 1px solid lightcoral; margin-top: 100px;}
+        #addUser form .inputInfo{margin: 10px auto; width: 80%;}
+        #addUser form button{display: block; margin: 0 auto; width: 30%;}
+    </style>
+{% endblock %}
+{% block content %}
+<div id="addUser" class="l">
+    <form method="POST">
+        <div class="inputInfo">
+            <label></label>
+            <input type="text" placeholder="account" name="account" id="account">
+        </div>
+        <div class="inputInfo">
+            <label></label>
+            <input type="text" placeholder="username" name="username" id="username">
+        </div>
+        <div class="inputInfo">
+            <label></label>
+            <input type="text" placeholder="password" name="password" id="password">
+        </div>
+        <div class="inputInfo">
+            <select name="level" id="userInfo">
+                <option value="USER_LOW">普通用户</option>
+                <option value="USER_MID">高级用户</option>
+                <option value="WORKER">普通员工</option>
+                <option value="MANAGE_LOW">后台员工</option>
+                <option value="MANAGE_MID">经理</option>
+                <option value="MANAGE_HIG">总监</option>
+                <option value="ADMIN">ADMIN</option>
+            </select>
+        </div>
+        <div>
+            <button type="submit">提交</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

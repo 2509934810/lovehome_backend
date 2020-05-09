@@ -1,0 +1,52 @@
+{% extends 'orderreq/base.html' %}
+
+{% block extraStyle %}
+    <style>
+    .myservice .req{border: 1px solid lightgray;}
+    .myservice .req table{text-align: center;}
+    .myservice .req span{text-align: center; display: block; font-weight: bold;}
+    .myservice .req p{text-align: left;}
+    .myservice .req .confirmBtn{width: 20%; height: 30px; margin: 0 auto;}
+    .myservice .req .confirmBtn a{width: 90%; height: 28px; display: block;
+        text-align: center; line-height: 28px ;background-color: aquamarine;}
+    .myservice .req .confirmBtn a:hover{border: 1px solid blue; cursor: pointer;}
+    </style>
+{% endblock %}
+{% block mainshow %}
+    <div class="myservice">
+        {% for req in reqlist %}
+            <div class="req">
+                <table>
+                    <tr>
+                        <td>账号</td>
+                        <td>开始时间</td>
+                        <td>服务类型</td>
+                        <td>服务时长</td>
+                        <td>申诉对象</td>
+                        <td>目前状态</td>
+                    </tr>
+                    <tr>
+                        <td>[[g.user.account]]</td>
+                        <td>[[req.startTime]]</td>
+                        <td>[[req.order.info.serviceType]]</td>
+                        <td>1h</td>
+                        <td>我爱我家</td>
+                        {% if req.reqType == 1 %}
+                        <td>未处理</td>
+                        {% elif req.reqType == 2 %}
+                        <td>处理中</td>
+                        {% elif req.reqType == 4 %}
+                        <td>已处理</td>
+                        {% endif %}
+                        <!-- <td>[[req.reqType]]</td> -->
+                    </tr>
+                </table>
+                <span>申诉内容</span>
+                <p>[[req.reqBody]]</p>
+                <div class="confirmBtn">
+                    <a>停止申诉</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

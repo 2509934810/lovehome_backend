@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>我的信息</title>
+{% endblock %}
+
+{% block style %}
+    <style>
+        .Main{display: grid; grid-template-columns: repeat(12, 1fr);}
+        .Main .leftBar{grid-column-start: 1; grid-column-end: 3;}
+        .Main .leftBar ul{margin-top: 20px; width: 80%; margin: 0 auto; height: 400px;  background-color: lightskyblue;}
+        .Main .leftBar ul li {width: 100%; height: 28px; text-align: center; margin-top: 10px;}
+        .Main .leftBar ul li a{display: block; width: 97%; height: 98%; padding: 1px; background-color: lightseagreen;}
+        .Main .leftBar ul li a:hover{border: 1px solid blue; cursor: pointer;}
+        .Main .MainShow{grid-column-start: 4; grid-column-end: 12; margin-top: 5px;}
+        .Main .MainShow table{width: 90%; border-collapse: collapse;}
+        .Main .MainShow table td{width: 10%; text-align: center; line-height: 28px;}
+        .Main .activeBtn{margin-top: 10px;}
+        .Main .activeBtn a{display: block; width: 20%; height: 28px;background-color: aqua;
+            text-align: center; line-height: 28px; margin: 0 auto; padding: 1px;}
+        .Main .activeBtn a:hover{border: 1px solid blue; cursor: pointer;}
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="Main">
+        <div class="leftBar">
+            <ul>
+                <li></li>
+                <li><a href="[[url_for('manage.userInfo')]]">我的信息</a></li>
+                {% if g.user.level < 8 %}
+                    {% if g.user.actived == True %}
+                        <li><a href="[[url_for('user.index')]]">我的服务</a></li>
+                    {% else %}
+                        <li><a>我的服务</a></li>
+                    {% endif %}
+                {% else %}
+                    {% if g.user.actived==True %}
+                        <li><a href="[[url_for('manage.service')]]">服务管理</a></li>
+                    {% else %}
+                        <li><a style="color: gray;">服务管理</a></li>
+                    {% endif %}
+                {% endif %}
+                {% if g.user.actived == True %}
+                    <li><a href="[[url_for('manage.salarystream')]]">资金流转</a></li>
+                {% else %}
+                    <li><a>资金流转</a></li>
+                {% endif %}
+                <li><a href="[[url_for('user.reqLists')]]">投诉邮箱</a></li>
+                <li><a href="[[url_for('chat.chat')]]">聊天室</a></li>
+            </ul>
+        </div>
+        <div class="MainShow">
+            <table border="1">
+                <tr>
+                    <td>姓名</td>
+                    <td>[[user.username]]</td>
+                    <td>账号</td>
+                    <td>[[user.account]]</td>
+                    <td>姓名</td>
+                    <td>[[user.sex]]</td>
+                    <td>年龄</td>
+                    <td>[[user.age]]</td>
+                    <td colspan="2" rowspan="2">
+                        <img src="#" title="头像" alt="头像" width="40px" height="80px">
+                    </td>
+                </tr>
+                <tr>
+                    <td>身份</td>
+                    <!-- <td>等级</td> -->
+                    {% if user.level == 1 %}
+                        <td>普通用户</td>
+                    {% elif user.level == 2 %}
+                        <td>高级用户</td>
+                    {% elif user.level == 4 %}
+                        <td>线下员工</td>
+                    {% elif user.level == 8 %}
+                        <td>操作员</td>
+                    {% elif user.level == 16 %}
+                        <td>经理</td>
+                    {% elif user.level == 32 %}
+                        <td>总监</td>
+                    {% elif user.level == 64 %}
+                        <td>管理员</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                    <td>激活状态</td>
+                    <td>[[user.actived]]</td>
+                    <td>居住地址</td>
+                    <td colspan="3">[[user.addr]]</td>
+                </tr>
+            </table>
+            <div class="activeBtn">
+                {% if g.user.actived==False %}
+                    <a href="[[url_for('manage.activedUser')]]">激活</a>
+                {% else %}
+                    <a href="[[url_for('manage.activedUser')]]">已激活</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

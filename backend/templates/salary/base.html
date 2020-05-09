@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block style %}
+    <style>
+        /* body{background-color: gray;} */
+        .Main{display: grid; grid-template-columns: repeat(12, 1fr);}
+        .Main .leftBar{grid-column-start: 1; grid-column-end: 3;}
+        .Main .leftBar ul{margin-top: 20px; width: 80%; margin: 0 auto; height: 400px;  background-color: lightskyblue;}
+        .Main .leftBar ul li {width: 100%; height: 28px; text-align: center; margin-top: 10px;}
+        .Main .leftBar ul li a{display: block; width: 97%; height: 98%; padding: 1px; background-color: lightseagreen;}
+        .Main .leftBar ul li a:hover{border: 1px solid blue; cursor: pointer;}
+        .Main .MainShow{grid-column-start: 4; grid-column-end: 12; margin-top: 5px;}
+        .Main .MainShow .comBar{line-height: 30px; margin-top: 5px; margin-bottom: 5px;}
+        .Main .MainShow .comBar .btnGroup ul li{float: left; margin-left: 5%; }
+        .Main .MainShow .comBar .btnGroup ul li a:hover{cursor: pointer;}
+        .Main .MainShow .myservice table{width: 100%; border-collapse: collapse; margin-top: 10px;}
+        .Main .MainShow .myservice table td{width: 10%;}
+    </style>
+    {% block extraStyle %}
+    {% endblock %}
+{% endblock %}
+{% block content %}
+    <div class="Main">
+        <div class="leftBar">
+            <ul>
+                <li></li>
+                <li><a href="[[url_for('manage.userInfo')]]">我的信息</a></li>
+                {% if g.user.level < 8 %}
+                    {% if g.user.actived== True %}
+                        <li><a href="[[url_for('user.index')]]">我的服务</a></li>
+                    {% else %}
+                        <li><a href="[[url_for('user.index')]]" disabled>我的服务</a></li>
+                    {% endif %}
+                {% else %}
+                    {% if g.user.actived== True %}
+                        <li><a href="[[url_for('manage.index')]]">管理服务</a></li>
+                    {% else %}
+                    <li><a href="[[url_for('manage.index')]]">管理服务</a></li>
+                    {% endif %}
+                {% endif %}
+                <li><a href="[[url_for('manage.salarystream')]]">资金流转</a></li>
+                <li><a href="[[url_for('user.reqLists')]]">投诉邮箱</a></li>
+
+                <li><a>聊天室</a></li>
+            </ul>
+        </div>
+        <div class="MainShow">
+            {% block mainshow %}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

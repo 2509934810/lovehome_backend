@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% block title %}
+    <title>
+        员工信息
+    </title>
+{% endblock %}
+
+{% block style %}
+    <style>
+        .Main{width: 100%;}
+        .Main .userInfo{width: 80%; margin: 0 auto;border: 1px solid lightgray; margin-top: 20px;}
+        .Main .userInfo h2{text-align: center;}
+        .Main .userInfo table{width: 98%; border-collapse: collapse;text-align: center; margin: 0 auto;}
+        .Main .userInfo table td{width: 10%;}
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="Main">
+        <div class="userInfo">
+            <h2>基本信息</h2>
+            <table border="1">
+                <tr>
+                    <td>账号</td>
+                    <td>[[user.account]]</td>
+                    <td>用户名</td>
+                    <td>[[user.username]]</td>
+                    <td>等级</td>
+                    {% if user.level == 1 %}
+                        <td>普通用户</td>
+                    {% elif user.level == 2 %}
+                    <td>高级用户</td>
+                    {% elif user.level == 4 %}
+                    <td>线下员工</td>
+                    {% elif user.level == 8 %}
+                    <td>操作员</td>
+                    {% elif user.level == 16 %}
+                    <td>经理</td>
+                    {% elif user.level == 32 %}
+                    <td>总监</td>
+                    {% elif user.level == 64 %}
+                    <td>管理员</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                    <td colspan="2" rowspan="2">
+                        <img src="#" alt="我的头型" height="80px">
+                    </td>
+                </tr>
+                <tr>
+                    <td>账号</td>
+                    <td>[[user.account]]</td>
+                    <td>用户名</td>
+                    <td>[[user.username]]</td>
+                    <td>等级</td>
+                    <td>[[user.level]]</td>
+                </tr>
+                <tr>
+                    <td>支持服务</td>
+                    <td>
+                        {% if user.lineworkerLink.first() %}
+                            {% for service in user.lineworkerLink.first().serviceId.all() %}
+                                {% if service.serviceType == 1 %}
+                                    月嫂 |
+                                {% elif service.serviceType == 2 %}
+                                    小时工 |
+                                {% elif service.serviceType == 4 %}
+                                    月嫂 |
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="userInfo">
+            <h2>管理员工信息</h2>
+            <table border="1">
+                <tr>
+                    <td>账号</td>
+                    <td>用户名</td>
+                    <td>等级</td>
+                    <td>年龄</td>
+                    <td>性别</td>
+                    <td>住址</td>
+                </tr>
+                {% for man in manUsers %}
+                <tr>
+                    <td>[[man.userAc]]</td>
+                    <td>lei1</td>
+                    <td>[[man.level]]</td>
+                    <td>年龄</td>
+                    <td>性别</td>
+                    <td>住址</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <!-- <div>
+            <iframe src="http://www.baidu.com" width="400px" height="300px">
+
+            </iframe>
+        </div> -->
+    </div>
+{% endblock %}

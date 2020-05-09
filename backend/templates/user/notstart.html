@@ -1,0 +1,60 @@
+{% extends 'user/worker/base.html' %}
+
+{% block mainshow %}
+    <div class="myservice">
+        {% for order in orders %}
+        <table>
+            <tr>
+                <td colspan="2" rowspan="2">
+                    <img src="[[url_for('static', filename=order.info.head_photo)]]" width="100%" height="80px">
+                </td>
+                <td>
+                    订单号
+                </td>
+
+                <td>服务类型</td>
+
+                <td>创建时间</td>
+
+                <td>服务预计时间</td>
+
+                <td>状态</td>
+
+            </tr>
+            <tr>
+                <td>
+                    [[order.id[:10]]]
+                </td>
+                {% if order.info.serviceType == 1 %}
+                    <td>月嫂</td>
+                {% elif order.info.serviceType == 2 %}
+                    <td>小时工</td>
+                {% elif order.info.serviceType == 4 %}
+                    <td>保姆</td>
+                {% else %}
+                    <td>[[order.info.serviceType]]</td>
+                {% endif %}
+                <td>[[order.createTime]]</td>
+                <td>[[order.preStartTime]]</td>
+                {% if order.orderType ==1 %}
+                    <td>未处理</td>
+                {% elif order.orderType ==2 %}
+                    <td>已处理</td>
+                {% elif order.orderType ==4 %}
+                    <td>进行中</td>
+                {% elif order.orderType ==8 %}
+                    <td>已结束</td>
+                {% elif order.orderType ==16 %}
+                    <td>未支付</td>
+                {% elif order.orderType ==32 %}
+                    <td>已支付</td>
+                {% else %}
+                <td>None</td>
+                {% endif %}
+                <!-- <td>[[order.orderType]]</td> -->
+            </tr>
+        </table>
+        {% endfor %}
+    </div>
+
+{% endblock %}

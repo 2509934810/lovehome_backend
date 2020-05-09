@@ -1,0 +1,60 @@
+version: "3"
+
+services:
+  traefik:
+    image: traefik:2.2
+    ports:
+      - 8080:8080
+      - 80:80
+      - 443:443
+      - 8081:9090
+    command:
+      - '--providers.docker'
+      - '--api.insecure=true'
+      - '--api.dashboard=true'
+      - '--entrypoints.web.address=:80'
+      - '--entrypoints.websecure.address=:443'
+      - '--entrypoints.other.address=:9090'
+      # - '--certificatesresolvers.myresolver.acme.email=2509934810@qq.com'
+      # - '--certificatesresolvers.myresolver.acme.storage=acme.json'
+      # - '--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web'
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    labels:
+      - "traefik.http.routers.api.rule=Host(`traefik.example.com`)"
+      - "traefik.http.routers.api.service=api@internal"
+      - "traefik.http.routers.api.middlewares=auth"
+      - "traefik.http.middlewares.auth.basicauth.users=test:$$apr1$$H6uskkkW$$IgXLP6ewTrSuBkTrqE8wj/,test2:$$apr1$$d9hr9HBB$$4HxwgUir3HP4EsggP/QNo0"
+  web:
+    image: registry.cn-hangzhou.aliyuncs.com/lovehome/backend:1.2
+    labels:
+      - traefik.http.routers.backend.rule=Host(`test.lovehome.com`)
+      - traefik.http.routers.backend.entrypoints=web
+      - traefik.http.routers.backend.service=backend-service
+      - traefik.http.services.backend-service.loadbalancer.server.port=5000
+      # - traefik.http.routers.backend.tls=true
+      # - traefik.http.routers.backend.tls.certresolver=myresolver
+    env_file: .env_file
+    depends_on: 
+      - db
+      - redis
+  db:
+    image: mariadb:10
+    volumes: 
+      - /home/lei/workspace/python/毕设/maridb:/var/lib/mysql
+    environment: 
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=lei
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    labels: 
+      - traefik.tcp.routers.db.rule=HostSNI(`mysql.io`)
+      - traefik.tcp.routers.db.service=db-service
+      - traefik.tcp.routers.db.tls={}
+      - traefik.tcp.services.db-service.loadbalancer.server.port=3306
+  redis:
+    image: redis:latest
+    labels: 
+      - traefik.tcp.routers.redis.rule=HostSNI(`redis.io`)
+      - traefik.tcp.routers.redis.service=redis-service
+      - traefik.tcp.routers.redis.tls={}
+      - traefik.tcp.services.redis-service.loadbalancer.server.port=6379

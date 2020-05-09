@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  {% block title %}{% endblock %}
+  <!-- <link rel="stylesheet" href="[[ url_for('static', filename='css/bootstrap.css') ]]"> -->
+  <style>
+        *{margin: 0; padding: 0;}
+        a{text-decoration: none;}
+        ul, ol{list-style: none;}
+        .container{width:80%; margin:0 auto; position: relative;}
+        .container-fluid{width: 100%;}
+        img{display: block;}
+        h1, h2, h3{ font-size: 16px;}
+        .clear:after{ content: ''; clear:both; display: block;}
+
+        .l{float: left;}
+        .r{float: right;}
+        body{background-color: lightyellow;}
+        #top{height: 60px; margin-top: 2px; min-width: 480px; position: relative;
+            font-weight: bold;display: grid; grid-template-columns: repeat(12, 1fr); background-color:whitesmoke;}
+        #top .logo{margin-top: 10px;grid-column-start: 1; grid-column-end: 2; margin-left: 4%;}
+        #top .menu{grid-column-start: 3; grid-column-end: 9; line-height: 60px;}
+        #top .menu li{margin-left: 10%; font-size: auto; display: inline;}
+        #top .menu h1{letter-spacing: 30px; text-align: center; line-height: 60px; font-size: 28px; color: yellowgreen;}
+        #top .Loginmenu{line-height: 60px; grid-column-start: 10; grid-column-end: 13;}
+        #top .Loginmenu .base{float: left; font-size: 100%; margin-left: 20%;}
+        /* #top .Loginmenu .base ul {margin-right: 20px; width: 50%;}
+        #top .Loginmenu .base ul li{background-color: aqua; margin-top: 10px; line-height: 28px; width: 50%;} */
+        #colll ul {display:none;}
+        #colll:hover ul{display: block}
+        #colll ul li{background-color: aqua; margin-top: 2px;}
+        #colll ul li a{display: block; width: 100%; height: 50%;}
+        /* #top .Loginmenu .base ul li{display: block; width: 100%; height: 28px; background-color: aqua;} */
+        /* 中间图片 */
+
+        #SideBar{margin-left: 20px; width: 13%; background-color: lightskyblue; height: 640px;}
+        #SideBar ul{width: 100%; height: 100%;}
+        #SideBar li{margin-top: 20px; height: 40px; text-align: center;}
+        #SideBar li a{font-size: 25px; line-height: 40px; display: block; margin: 0 auto;}
+        #SideBar li a:hover{background-color: lightseagreen;}
+        #banner li{width: 95%; padding-top: 40%; margin: 0 auto;}
+
+        #bottom{width: 100%; min-width: 960px; position: fixed; bottom: 0px; left: 0;
+            height: 40px;background-color: lightseagreen; line-height: 40px;}
+        #bottom p {float: left;}
+        #bottom a {float: right; margin-left: 20px; color:black;}
+        #blank{width: 100%; height: 40px;}
+  </style>
+  {% block style %}
+
+  {% endblock %}
+</head>
+<body>
+    <div id="top">
+        <div class="logo">
+          <a href="/">
+            <img src="[[ url_for('static', filename='img/index-logo.png') ]]" alt="lovehome" width="45" height="45px">
+          </a>
+        </div>
+        <div class="menu">
+          <h1>
+              我爱我家后台管理
+          </h1>
+        </div>
+
+        <div class="Loginmenu">
+          <ul>
+            <li class="base">管理员</li>
+            <li class="base" id="colll">
+               <a>我的信息</a>
+               <ul>
+                   <li>具体信息</li>
+                   <li>安全信息</li>
+                   <li><a href="[[url_for('admin.logout')]]">修改密码</a></li>
+                   <li><a href="[[url_for('admin.logout')]]">退出登录</a></li>
+               </ul>
+            </li>
+          </ul>
+        </div>
+
+    </div>
+    <div class="Main">
+        <div id="SideBar" class="l clear">
+            <ul>
+                <li><a href="[[url_for('admin.index')]]">成员管理</a></li>
+                <li><a href="[[url_for('admin.manage')]]">员工管理</a></li>
+                <li><a href="[[url_for('admin.orderList')]]">服务展示</a></li>
+                <li><a href="[[url_for('admin.salary')]]">资金流动</a></li>
+                <li><a>投诉信箱</a></li>
+                <li><a>合作伙伴</a></li>
+            </ul>
+        </div>
+        {% block content %}
+        {% endblock %}
+        {% for message in get_flashed_messages() %}
+        <dov>
+          <span style="text-align: center; margin-top: 300px; font-size: 30px;">[[message]]</span>
+        </dov>
+        {% endfor %}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    {% block script %}{% endblock %}
+    <div>
+      <img src="[[url_for('static', filename='img/th.jpeg')]]" width="100%" height="200px">
+  </div>
+    <div id="bottom" class="container-fluid">
+        <div class="container">
+          <p>Copyright by Lovehome 2020</p>
+          <a href="#">合作</a>
+          <a href="#">招聘|</a>
+          <a href="#">投资|</a>
+          <a href="#">技术支持|</a>
+        </div>
+      </div>
+</body>

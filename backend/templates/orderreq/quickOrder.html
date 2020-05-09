@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block style %}
+    <style>
+        .Main .quickForm{width: 40vw; height: 50vh; margin: 0 auto;
+            margin-top: 10vh; background-color: lightsalmon;}
+        .Main .quickForm form{}
+        .Main h2{text-align: center;}
+        .Main .quickForm form .inputdata{display: grid; grid-template-columns: repeat(12, 1fr); margin-top: 5px; height: 40px;}
+        .Main .quickForm form .inputdata label{grid-column-start: 1; grid-column-end: 5; text-align: center;}
+        .Main .quickForm form .inputdata .inputBody{display: block; grid-column-start: 5; grid-column-end: 12; font-size: 28px;width: 98%;}
+        .Main .quickForm form .inputdata select{grid-column-start: 5; grid-column-end: 12; font-size: 28px;width: 100%;}
+        .Main .quickForm form .confirmBtn{margin-top: 20px;}
+        .Main .quickForm form .confirmBtn input{display: block; width: 20%; height: 30px; margin: 0 auto;}
+    </style>
+{% endblock %}
+{% block content %}
+<div class="Main">
+    <div class="quickForm">
+        <h2>快速订单</h2>
+        <form method="POST">
+            <div class="inputdata">
+                <label>服务类型</label>
+                <select name="serviceType">
+                    <option value="xiaoshi">小时工</option>
+                    <option value="yuesao">月嫂</option>
+                    <option value="baomu">保姆</option>
+                </select>
+            </div>
+            <div class="inputdata">
+                <label>预计开始时间</label>
+                <input type="date" name="preStartTime" class="inputBody">
+            </div>
+            <div class="inputdata">
+                <label>服务人员性别</label>
+                <select name="sex">
+                    <option value="man">男</option>
+                    <option value="woman">女</option>
+                </select>
+            </div>
+            <div class="inputdata">
+                <label>服务人员年龄范围（+-10）</label>
+                <input type="number" name="age" class="inputBody">
+            </div>
+            <div class="confirmBtn">
+                <input type="submit" value="提交">
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

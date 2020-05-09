@@ -1,0 +1,77 @@
+{% extends 'admin/base.html' %}
+
+{% block style %}
+<style>
+    .MainView{width: 80%; float: right;}
+    .MainView .topBar ul li{float: left;            margin-left: 4%; height: 30px;}
+    .MainView .myservice{border-top: 1px solid lightgrey;}
+    .MainView .myservice .comBar ul li {float: left; margin-left: 4%;width: 25%;}
+    .MainView .myservice .comBar ul li a{display: block; width: 80%; height: 30px; margin: 0 auto;
+    background-color: lightskyblue; text-align: center; line-height: 30px;cursor: pointer;}
+    .MainView .myservice .econInfo span{margin-left: 4%; display: block; float: left;;}
+    .MainView .myservice .salaryStand{margin-top: 10px;}
+    .MainView .myservice .salaryStand table{width: 100%; border-collapse: collapse; text-align: center;}
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="MainView">
+        <div class="topBar">
+            <ul class="clear">
+                <li><a href="[[url_for('admin.setSalary')]]">批量修改</a></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+        <div class="myservice">
+            <div class="econInfo clear">
+                <span>总人数: [[users|length]]</span>
+                <span>平均工资: [[avgSalary]]</span>
+            </div>
+            <div class="salaryStand">
+                <table border="1">
+                    <tr>
+                        <td>姓名</td>
+                        <td>账号</td>
+                        <td>职位</td>
+                        <td>薪资水平</td>
+                        <td>操作框</td>
+                    </tr>
+                    {% for user in users %}
+                        <tr>
+                            <td>[[user.username]]</td>
+                            <td>[[user.account]]</td>
+                            {% if user.level == 1 %}
+                                <td>普通用户</td>
+                            {% elif user.level == 2 %}
+                                <td>高级用户</td>
+                            {% elif user.level == 4 %}
+                                <td>线下员工</td>
+                            {% elif user.level == 8 %}
+                                <td>操作员</td>
+                            {% elif user.level == 16 %}
+                                <td>经理</td>
+                            {% elif user.level == 32 %}
+                                <td>总监</td>
+                            {% elif user.level == 64 %}
+                                <td>管理员</td>
+                            {% else %}
+                                <td></td>
+                            {% endif %}
+                            {% if user.salaryStandLink.first().salaryNum %}
+                                <td>[[user.salaryStandLink.first().salaryNum]]</td>
+                            {% else %}
+                                <td>未设置</td>
+                            {%endif%}
+                            <td>
+                                <a href="[[url_for('admin.setSalarys', id=user.account)]]">修改</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

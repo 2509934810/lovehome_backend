@@ -1,0 +1,64 @@
+{% extends 'chat/base.html' %}
+
+{% block extrastyle %}
+    <style>
+        .chat{}
+        .chat .chatwin{width: 90%; border: 1px solid lightgray; height: 400px; margin-left: 10%;}
+        .chat .chatwin li{width: 100%;}
+        .chat .sendmsg{width: 90%; margin-left: 10%;}
+        .chat .sendmsg input{width: 80%; height: 30px;}
+        .chat .sendmsg button{width: 10%; height: 28px;}
+    </style>
+{% endblock %}
+
+
+{% block chatview %}
+    
+    <div class="chat">
+        <div class="chatwin">
+            <div style="margin-bottom: 10px;">
+                <span>房间Id : </span>
+                <span id="roomId">[[chatmsg[0].roomId]]</span>
+                <span>房间类型: {% if chatmsg[0].chatroom.roomType == 1 %}
+                    广播房
+                    {% elif chatmsg[0].chatroom.roomType == 2 %}
+                    个人房
+                    {% endif %}
+                </span>
+            </div>
+            <ul>
+                {% for msg in chatmsg %}
+                    {%  if msg.fromUser == g.user.account %}
+                        <li style="text-align: right;"><a>我</a>[[msg.msgBody]]</li>
+                    {% else %}
+                        <li><a>[[msg.fromUser]]</a>&nbsp; : [[msg.msgBody]]</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="sendmsg">
+            <input type="text" name="" id="msg">
+            <button id="sendBtn">发送</button>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(document).ready(function(){
+            $("#sendBtn").on("click", function(){
+                console.log(document.getElementById("msg").value)
+                var msg = document.getElementById("msg").value
+                var roomId = document.getElementById("roomId").innerHTML
+                axios({
+                    method: 'post',
+                    url: location.protocol + "//" + location.host + "/chat/spread",
+                    data: {
+                        messsage:msg,
+                        roomId:roomId
+                    }
+                })
+            })
+        })
+    </script>
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}
+    <title>员工信息</title>
+{% endblock %}
+
+{% block style %}
+    <style>
+        .UserInfo{width: 70%; float: right; margin-right: 10%;}
+        .UserInfo table{width: 100%; text-align: center;}
+        .UserInfo h2{text-align: center; line-height: 30px;}
+        .UserInfo table td{width: 10%;}
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="UserInfo">
+        <h2>基本信息</h2>
+        <table style="border-collapse: collapse;" border="1">
+            <tr>
+                <td>姓名</td>
+                <td>[[user.username]]</td>
+                <td>账号</td>
+                <td>[[user.account]]</td>
+                <td>职位</td>
+                {% if user.level == 1 %}
+                    <td>普通用户</td>
+                {% elif user.level == 2 %}
+                <td>高级用户</td>
+                {% elif user.level == 4 %}
+                <td>线下员工</td>
+                {% elif user.level == 8 %}
+                <td>操作员</td>
+                {% elif user.level == 16 %}
+                <td>经理</td>
+                {% elif user.level == 32 %}
+                <td>总监</td>
+                {% elif user.level == 64 %}
+                <td>管理员</td>
+                {% else %}
+                <td></td>
+                {% endif %}
+                <td>身份证号</td>
+                <td></td>
+                <td>注册日期</td>
+                <td>[[user.pub_date]]</td>
+            </tr>
+            <tr>
+                <td>居住地址</td>
+                <td></td>
+                <td>年龄</td>
+                <td>[[user.age]]</td>
+                <td>性别</td>
+                <td>[[user.sex]]</td>
+                <td>管理者</td>
+                {% if user.level == 4 %}
+                <td>[[user.lineworkerLink.first().loveworker.userAc]]</td>
+                {% elif user.level == 8 %}
+                <td>[[user.workerLink.first().lovemanage.userAc]]</td>
+                {% elif user.level > 8 %}
+                <td>[[user.manLink.manId]]</td>
+                <!-- <td>[[user]]</td> -->
+                {% endif %}
+                <td>最近登录时间</td>
+                <td></td>
+
+            </tr>
+        </table>
+        <!-- <h2>管理信息</h2>
+        <table style="border-collapse: collapse;" border="1">
+            <tr>
+                <td>管理者</td>
+                <td></td>
+                <td>服务好评数</td>
+                <td>服务范围</td>
+            </tr>
+        </table> -->
+        <h2>服务信息</h2>
+        <table style="border-collapse: collapse;" border="1">
+            <tr>
+                <td>服务类型</td>
+                <td>服务次数</td>
+                <td>服务好评数</td>
+                <td>服务范围</td>
+            </tr>
+            {% for service in serviceList %}
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% if user.level > 4 %}
+        <h2>管理信息</h2>
+        <table border="1" style="border-collapse: collapse;">
+            <tr>
+                <td>账号</td>
+                <td>等级</td>
+                <td>名称</td>
+                <!-- <td>服务类型</td> -->
+                <!-- <td></td>
+                <td></td> -->
+            </tr>
+            {% for worker in manworkers %}
+                <tr>
+                    <td><a href="[[url_for('admin.userInfo', account=worker.userAc)]]">[[worker.userAc]]</a></td>
+                    {% if worker.user.level == 1 %}
+                    <td>普通用户</td>
+                    {% elif worker.user.level == 2 %}
+                    <td>高级用户</td>
+                    {% elif worker.user.level == 4 %}
+                    <td>线下员工</td>
+                    {% elif worker.user.level == 8 %}
+                    <td>操作员</td>
+                    {% elif worker.user.level == 16 %}
+                    <td>经理</td>
+                    {% elif worker.user.level == 32 %}
+                    <td>总监</td>
+                    {% elif worker.user.level == 64 %}
+                    <td>管理员</td>
+                    {% else %}
+                    <td></td>
+                    {% endif %}
+                    <td>[[worker.user.username]]</td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+    </div>
+{% endblock %}

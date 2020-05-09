@@ -1,0 +1,39 @@
+{% extends 'manage/user/base.html' %}
+{% block extrastyle %}
+<style>
+    body{background-color: lightgray;}
+    .confirmForm{width: 40vw; height: 80vh; margin: 0 auto;}
+    .confirmForm .inputData{margin-top: 20px; display: grid; grid-template-columns: repeat(12, 1fr);}
+    .confirmForm .inputData label{text-align: center; grid-column-start: 1; grid-column-end: 4;}
+    .confirmForm .inputData input{grid-column-start: 4; grid-column-end: 9;}
+    .confirmForm .inputData select{grid-column-start: 4; grid-column-end: 9;}
+    .confirmForm .confirmBtn{margin-top: 20px;}
+    .confirmForm .confirmBtn input{width: 30%; height: 28px;display: block; margin: 0 auto;}
+</style>
+{% endblock %}
+
+{% block mainshow %}
+    <div class="confirmForm">
+        <form method="POST">
+            <div class="inputData">
+                <label>
+                    帐号
+                </label>
+                <input value="[[id]]" name="id" readonly>
+            </div>
+            <div class="inputData">
+                <label>
+                    优惠券
+                </label>
+                <select name="preferCardId">
+                    {% for prefercard in prefercards %}
+                        <option value="[[prefercard.Id]]">[[prefercard.Id]]_[[prefercard.cardNum]]</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="confirmBtn">
+                <input type="submit" value="发放">
+            </div>
+        </form>
+    </div>
+{% endblock %}

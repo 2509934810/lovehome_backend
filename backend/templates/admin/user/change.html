@@ -1,0 +1,59 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}
+    <title>修改资料</title>
+{% endblock %}
+
+{% block style %}
+    <style>
+        body{background-color: gray; opacity: 0.4; z-index: 1;}
+        #addUser{width: 70%; height: 980px;}
+        #addUser form{margin: 100px auto;width: 40%;  z-index: 10;background-color: lightgreen;  margin: 0 auto; border-radius: 30px; border: 1px solid lightcoral; margin-top: 100px;}
+        #addUser form .inputInfo{margin: 10px auto; width: 80%; display: grid; grid-template-columns: repeat(12, 1fr);}
+        #addUser form label{grid-column-start: 1; grid-column-end: 5;}
+        #addUser form input{grid-column-start: 5; grid-column-end: 11;}
+        #addUser form button{display: block; margin: 0 auto; width: 30%;}
+
+    </style>
+{% endblock %}
+{% block content %}
+<div id="addUser" class="l">
+    <form method="POST" onsubmit="return validate()">
+        <div class="inputInfo">
+            <label>账号</label>
+            <input type="text" placeholder="account" name="account" id="account" value="[[user.account]]" readonly>
+        </div>
+        <div class="inputInfo">
+            <label>用户名</label>
+            <input type="text" placeholder="username" name="username" id="username" value="[[user.username]]">
+        </div>
+        <div class="inputInfo">
+            <label>密码</label>
+            <input type="text" placeholder="password" name="password" id="password" value="****************">
+        </div>
+        <div class="inputInfo">
+            <label>权限</label>
+            <select name="level" id="userInfo">
+                <option value="USER_LOW">普通用户</option>
+                <option value="USER_MID">高级用户</option>
+                <option value="WORKER">普通员工</option>
+                <option value="MANAGE_LOW">后台员工</option>
+                <option value="MANAGE_MID">经理</option>
+                <option value="MANAGE_HIG">总监</option>
+            </select>
+        </div>
+        <div>
+            <button type="submit">提交</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+
+{% block script %}
+    <script>
+        function validate(){
+            return true;
+        }
+    </script>
+{% endblock %}

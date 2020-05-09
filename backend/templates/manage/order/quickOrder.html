@@ -1,0 +1,92 @@
+{% extends 'manage/base.html' %}
+{% block extrastyle %}
+    <style>
+        #spread{display: block; width: 95%; height: 95%; background-color: aqua;}
+        #spread:hover{border: 1px solid blue;}
+        .tableShow table tr{margin-top: 10px;}
+    </style>
+{% endblock %}
+{% block mainshow %}
+<div class="comBar clear">
+    <p class="l">管理</p>
+    <div class="btnGroup">
+        <ul>
+        <li><a href="[[url_for('manage.index')]]">我的用户</a></li>
+        {% if g.user.level > 8 %}
+        <li><a href="[[url_for('manage.addUser')]]">添加用户</a></li>
+        <li><a href="[[url_for('manage.userNotContro')]]">未分配</a></li>
+        {% endif %}
+        <!-- <li><a href="#">修改</a></li> -->
+        <li><a id="deleteRel">删除</a></li>
+        <li><a id="despread">分配</a></li>
+        <li><a href="[[url_for('manage.show')]]">可视化</a></li>
+        {% if g.user.level == 8 %}
+        <li><a href="[[url_for('manage.serviceReq')]]">服务申请</a></li>
+        {% endif %}
+        {% if g.user.level > 4%}
+            <li><a href="[[url_for('manage.quickorder')]]">快速申请</a></li>
+        {% endif %}
+        </ul>
+    </div>
+</div>
+    <div class="tableShow">
+        <table>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>临时订单号</td>
+                <!-- <td>客户账号</td> -->
+                <td>客户联系方式</td>
+                <td>服务类型</td>
+                <td>服务人员年龄</td>
+                <td>服务人员性别</td>
+                <td>服务申请时间</td>
+                <td>计划开始时间</td>
+                <td>服务地点</td>
+                <!-- <td>服务薪资</td> -->
+                <td>订单状态</td>
+            </tr>
+            {% for order in orders %}
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td title="[[order.Id]]">[[order.Id[:10]]]</td>
+                    <!-- <td>[[order]]</td> -->
+                    <td>[[order.baseuser.user.telephone]]</td>
+                    {% if order.serviceType == 1 %}
+                        <td>月嫂</td>
+                    {% elif order.serviceType == 2 %}
+                        <td>小时工</td>
+                    {% elif order.serviceType == 4 %}
+                        <td>保姆</td>
+                    {% else %}
+                        <td>其他</td>
+                    {% endif %}
+                    {% if order.sex == 1 %}
+                        <td>男</td>
+                    {% elif order.sex == 2 %}
+                        <td>女</td>
+                    {% else %}
+                        <td>无所谓</td>
+                    {% endif %}
+                    </td>
+                    <td>[[order.sex]]</td>
+                    <td>[[order.createTime]]</td>
+                    <td>[[order.preStartTime]]</td>
+                    <td>[[order.addr]]</td>
+                    {% if order.quickType == 1 %}
+                    <td>未处理</td>
+                    {% elif order.quickType == 2 %}
+                    <td>处理中</td>
+                    {% elif order.quickType == 2 %}
+                    <td>已处理</td>
+                    {%endif%}
+                </tr>
+                <tr>
+                    <td colspan="3"></td>
+                    {% if order.quickType == 1 %}
+                    <td colspan="3"><a id="spread" href="[[url_for('manage.spreadquick', id=order.Id)]]">分配</a></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

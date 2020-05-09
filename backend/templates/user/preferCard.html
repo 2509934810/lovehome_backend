@@ -1,0 +1,38 @@
+{% extends 'user/worker/base.html' %}
+
+{% block extraStyle %}
+    <style>
+        /* .myservice table tr td {h} */
+        .myservice table tr td a{display: block; width: 80%; height: 28px; background-color: lightseagreen ;
+            text-align: center; line-height: 28px; cursor: pointer;}
+    </style>
+{% endblock %}
+
+{% block mainshow %}
+
+    <div class="myservice">
+        {% for card in cardlist %}
+            <table>
+                <tr>
+                    <td colspan="2" rowspan="2">
+                        <img src="[[url_for('static', filename='img/prefer.jpeg')]]" width="100px" height="80px">
+                    </td>
+                    <td>优惠券ID</td>
+                    <td>优惠券发布时间</td>
+                    <td>优惠券有效期</td>
+                    <td>优惠券数额</td>
+                    <!-- <td>优惠券ID</td> -->
+                    <td rowspan="2">
+                        <a href="[[url_for('service.homeservice')]]">使用</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>[[card.cardId]]</td>
+                    <td>[[card.perfercard.createTime]]</td>
+                    <td>[[card.perfercard.expireTime]]</td>
+                    <td>[[card.perfercard.cardNum]]元</td>
+                </tr>
+            </table>
+        {% endfor %}
+    </div>
+{% endblock %}

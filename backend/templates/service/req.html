@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}<title>员工信息</title>{% endblock %}
+{% block style %}
+    <style>
+        .container{width: 80%; margin: 0 auto;}
+        .topInfo{display: grid; grid-template-columns: repeat(12, 1fr);margin-top: 10px;}
+        .topInfo .head_photo{grid-column-start: 1; grid-column-end: 3;}
+        .topInfo .serInfo1{grid-column-start: 4; grid-column-end: 7;}
+        .topInfo .serInfo2{grid-column-start: 8; grid-column-end: 10;}
+        .topInfo .serInfo1 tr{margin-top: 10px; display: block;}
+        .topInfo .serInfo2 tr{margin-top: 10px; display: block;}
+        .other_photo{width: 90%; margin: 0 auto; border: 1px solid lightgray; border-radius: 20px; margin-top: 20px;}
+        /* .other_photo */
+        .other_photo h2{text-align: center;}
+        .other_photo .photo .notFindphoto{width: 90%; height: 400px; margin: 0 auto;}
+        .simShow{margin-top: 20px; display: grid; grid-template-columns: repeat(12, 1fr);}
+        .simShow .page{grid-column-start: 1; grid-column-end: 6; border: 1px solid lightcyan;
+             height: 300px; overflow: hidden; text-align: left;}
+        .simShow .mv{grid-column-start: 7; grid-column-end: 13; height: 300px;}
+        .orderBtn{margin-top: 20px;}
+        .orderBtn a{display: block; width: 15%; height: 28px; margin: 0 auto;
+            background-color: aqua;padding: 1px; text-align: center; line-height: 28px;}
+        .orderBtn a:hover{border: 1px solid blue;}
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="Main container">
+        <div class="topInfo">
+            <div class="head_photo">
+                <img src="[[url_for('static', filename=service.head_photo)]]" width="80%">
+            </div>
+            <div class="serInfo1">
+                <table>
+                    <tr>
+                        <td>姓名 : </td>
+                        <td>[[user.username]]</td>
+                    </tr>
+                    <tr>
+                        <td>年龄 : </td>
+                        <td>[[user.age]]</td>
+                    </tr>
+                    <tr>
+                        <td>服务等级 : </td>
+                        <td>[[user.age]]</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="serInfo2">
+                <table>
+                    <tr>
+                        <td>服务类型 : </td>
+                        <td> {% if  service.serviceType == 1 %}
+                            月嫂
+                            {% elif  service.serviceType == 2 %}
+                            小时工
+                            {% elif  service.serviceType == 4 %}
+                            保姆
+                            {% endif %}</td>
+                    </tr>
+                    <tr>
+                        <td>价格 : </td>
+                        <td>[[service.avg_salary]]</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="other_photo">
+            <h2>其他照片</h2>
+            <div class="photo">
+                {% if orher_photo %}
+                    <ul>
+
+                    </ul>
+                {% else %}
+                    <img class="notFindphoto" src="[[url_for('static', filename='img/404.jpg')]]">
+                    <!-- <span></span> -->
+                {% endif %}
+            </div>
+        </div>
+        <div class="simShow">
+            <div class="page">
+                <p>
+                    Spring Boot makes it easy to create stand-alone, production-grade Spring based Applications that you can "just run".
+                    We take an opinionated view of the Spring platform and third-party libraries so you can get started with minimum fuss. Most Spring Boot applications need minimal Spring configuration.
+                    Spring Boot makes it easy to create stand-alone, production-grade Spring based Applications that you can "just run".
+                    We take an opinionated view of the Spring platform and third-party libraries so you can get started with minimum fuss. Most Spring Boot applications need minimal Spring configuration.
+                    Spring Boot makes it easy to create stand-alone, production-grade Spring based Applications that you can "just run".
+                    We take an opinionated view of the Spring platform and third-party libraries so you can get started with minimum fuss. Most Spring Boot applications need minimal Spring configuration.
+                    Spring Boot makes it easy to create stand-alone, production-grade Spring based Applications that you can "just run".
+                    We take an opinionated view of the Spring platform and third-party libraries so you can get started with minimum fuss. Most Spring Boot applications need minimal Spring configuration.
+                    Spring Boot makes it easy to create stand-alone, production-grade Spring based Applications that you can "just run".
+                    We take an opinionated view of the Spring platform and third-party libraries so you can get started with minimum fuss. Most Spring Boot applications need minimal Spring configuration.
+                    Spring Boot makes it easy to create stand-alone, production-grade Spring based Applications that you can "just run".
+                    We take an opinionated view of the Spring platform and third-party libraries so you can get started with minimum fuss. Most Spring Boot applications need minimal Spring configuration.
+                </p>
+            </div>
+            <div class="mv">
+                <video width="100%" src="http://www.w3school.com.cn/example/html5/mov_bbb.mp4" autoplay="autoplay" controls>
+                    <!-- <source  type="video/mp4"/> -->
+                </video>
+            </div>
+        </div>
+        <div class="orderBtn">
+            <a href="[[url_for('service.confirmservice', id=service.id)]]">预约</a>
+        </div>
+    </div>
+{% endblock %}

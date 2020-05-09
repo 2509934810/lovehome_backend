@@ -1,0 +1,43 @@
+{% extends 'manage/order/base.html' %}
+{% block extrastyle %}
+    <style>
+        body{background-color: gray;}
+        .myservice{width: 40%; height: 80vh; margin: 10vh auto; background-color: wheat;}
+        .myservice .connectUser{padding-top: 30vh ; width: 100%; height: 30vh;}
+        .myservice .orderResult{width: 80%; margin: 0 auto;}
+        .myservice .orderResult input{margin-left: 10%;}
+        #submitbtn{display: block; margin: 0 auto; width: 30%; height: 30px;}
+    </style>
+{% endblock %}
+{% block mainshow %}
+    <div class="myservice">
+        <div class="connectUser">
+            <h2 style="text-align: center; line-height: 28px; font-size: 24px;">请拨打[[order.baseuser.user.telephone]]联系客户</h2>
+        </div>
+        <div class="">
+            <form method="POST">
+                <div class="orderResult">
+                    <input name="result" type="radio" value="1">差
+                    <input name="result" type="radio" value="2">良
+                    <input name="result" type="radio" value="3">优
+                </div>
+                <br>
+                <input id="submitbtn" type="submit" value="提交">
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        function initcheck(rName, rValue){
+            var ele = document.getElementsByName("result");
+            for (var i=0; i<ele.length; i++){
+                if (ele[i].value == rValue){
+                    ele[i].checked = 'checked';
+                }
+            }
+        }
+        initcheck("result", 3)
+    </script>
+{% endblock %}

@@ -1,0 +1,11 @@
+flask==1.1.2
+python-dotenv==0.12.0
+flask-sqlalchemy
+pymysql
+flask-redis
+flask-celery
+celery
+flask-celery-helper
+pre-commit
+requests
+flask-cors

@@ -1,0 +1,90 @@
+{% extends 'manage/base.html' %}
+
+{% block extrastyle %}
+    <style>
+        .myservice{width: 80%;}
+        .myservice .orderTable{background-origin: 1px solid lightgray;}
+        .myservice .orderTable h2{text-align: center; font-size: 26px; font-weight: bold;}
+        .myservice .orderTable table{width: 100%; border-collapse: collapse; text-align: center;}
+        .myservice .serviceTable{margin-top: 20px;}
+        .myservice .serviceTable h2{text-align: center; font-size: 28px;}
+        .myservice .serviceTable table{width: 100%; border-collapse: collapse; text-align: center;}
+        .myservice .serviceTable div a{display: block; width: 30%; height: 26px;
+            background-color: aqua; margin: 0 auto; text-align: center; cursor: pointer; border: 1px solid blue;}
+    </style>
+{% endblock %}
+{% block mainshow %}
+    <div class="myservice">
+        <div class="orderTable">
+            <h2>需求订单信息</h2>
+            <table border="1">
+                <tr>
+                    <td>订单Id</td>
+                    <td>服务类型</td>
+                    <td>服务地址</td>
+                    <td>性别要求</td>
+                    <td>年龄要求</td>
+                </tr>
+                <tr>
+                    <td title="[[order.Id]]">[[order.Id[:10]]]</td>
+                    {% if order.serviceType == 1 %}
+                        <td>月嫂</td>
+                    {% elif order.serviceType == 2 %}
+                        <td>小时工</td>
+                    {% elif order.serviceType == 4 %}
+                        <td>保姆</td>
+                    {% else %}
+                        <td>其他</td>
+                    {% endif %}
+                    <td>[[order.addr]]</td>
+                    {% if order.sex == 1 %}
+                        <td>男</td>
+                    {% elif order.sex == 2 %}
+                        <td>女</td>
+                    {% else %}
+                        <td>无所谓</td>
+                    {% endif %}
+                    <td>[[order.age]]</td>
+                </tr>
+            </table>
+        </div>
+        {% if serviceList %}
+            <div class="serviceTable">
+                <h2>可选择的员工</h2>
+                {% for service in serviceList %}
+                    <table border="1">
+                        <tr>
+                            <td>员工账号</td>
+                            <td>员工名称</td>
+                            <td>员工性别</td>
+                            <td>员工年龄</td>
+                            <td>员工服务薪资</td>
+                            <td>员工联系方式</td>
+                            <td>员工地址</td>
+                        </tr>
+                        <tr>
+                            <td>[[service.lovelineworker.userAc]]</td>
+                            <td>[[service.lovelineworker.user.username]]</td>
+                            {% if service.lovelineworker.user.sex ==1  %}
+                            <td>男</td>
+                            {% elif service.lovelineworker.user.sex ==2 %}
+                            <td>女</td>
+                            {% else %}
+                            <td>未设置</td>
+                            {% endif %}
+                            <td>[[service.lovelineworker.user.age]]</td>
+                            <td>[[service.avg_salary]]</td>
+                            <td>[[service.lovelineworker.user.telephone]]</td>
+                            <td>[[service.live_addr]]</td>
+                        </tr>
+                    </table>
+                    <div>
+                        <a href="[[url_for('manage.confirmQuick', serviceId=service.id, orderId=order.Id)]]">确定</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            no info
+        {% endif %}
+    </div>
+{% endblock %}

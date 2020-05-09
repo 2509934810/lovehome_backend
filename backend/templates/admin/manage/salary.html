@@ -1,0 +1,106 @@
+{% extends 'admin/base.html' %}
+
+{% block style %}
+<style>
+    .MainView{width: 80%; float: right;}
+    .MainView .topBar ul li{float: left;            margin-left: 4%; height: 30px;}
+    .MainView .myservice{border-top: 1px solid lightgrey;}
+    .MainView .myservice .comBar ul li {float: left; margin-left: 4%;width: 25%;}
+    .MainView .myservice .comBar ul li a{display: block; width: 80%; height: 30px; margin: 0 auto;
+    background-color: lightskyblue; text-align: center; line-height: 30px;cursor: pointer;}
+    .MainView .myservice .econInfo span{margin-left: 4%; display: block; float: left;;}
+    .MainView .myservice .econStream{margin-top: 10px;}
+    .MainView .myservice .econStream .econt table{width: 100%; border-collapse: collapse; text-align: center;}
+</style>
+{% endblock %}
+{% block content %}
+<div class="MainView">
+    <div class="topBar">
+        <ul class="clear">
+            <li>
+                <select>
+                    <option>本月</option>
+                    <option>最近三月</option>
+                    <option>最近一年</option>
+                    <option>最近三年</option>
+                </select>
+            </li>
+            <li>服务资产关系</li>
+            <li><a>收入分析</a></li>
+            <li><a href="[[url_for('admin.spreadSalary')]]">工资发放</a></li>
+            <li><a href="[[url_for('admin.manageSalary')]]">工资管理</a></li>
+            <li><a id="printecon" style="color: blue;">导出报表</a></li>
+            <li><a href="[[url_for('admin.getperfreCard')]]">优惠券管理</a></li>
+        </ul>
+    </div>
+    <div class="myservice">
+        <div class="comBar">
+            <ul class="clear">
+                <li><a href="[[url_for('admin.salary', iosalary=True)]]">资金流入</a></li>
+                <li><a href="[[url_for('admin.salary', iosalary=False)]]">资金流出</a></li>
+                <li><a href="[[url_for('admin.salary')]]">资金流动</a></li>
+            </ul>
+        </div>
+        <div class="econInfo clear">
+            <span>入账: [[insalary]]</span>
+            <span>出账: [[outsalary]]</span>
+            <span>资金流动: [[sumsalary]]</span>
+        </div>
+        <div class="econStream">
+
+                <div class="econt">
+                    <table border="1">
+                        <tr>
+                            <td>开始时间</td>
+                            <td>资金记录</td>
+                            <td>资金数量</td>
+                            <td>资金明细</td>
+                        </tr>
+                        {% for econ in econstreams %}
+                        <tr>
+                            <td>[[econ.createTime]]</td>
+                            {% if econ.econType == True %}
+                                <td>流入</td>
+                            {% else %}
+                                <td>流出</td>
+                            {% endif %}
+                            <td>[[econ.econNum]]元</td>
+                            {% if econ.serviceType == 1 %}
+                                <td>月嫂服务</td>
+                            {% elif econ.serviceType == 2 %}
+                                <td>小时工服务</td>
+                            {% elif econ.serviceType == 4 %}
+                                <td>保姆服务</td>
+                            {% elif econ.serviceType == 8 %}
+                                <td>工资</td>
+                            {% else %}
+                                <td>其他</td>
+                            {% endif %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block script %}
+<script>
+    $(document).ready(function(){
+        $("#printecon").on("click", function(){
+            baseUrl = location.protocol + "//" + location.host
+            axios({
+                url: baseUrl + '/admin/manage/salary/print',
+                method: 'get'
+            }).then(function(rsp){
+                if (rsp.data.code == 200){
+                    pdfPath = baseUrl + "/static/img/" + rsp.data.data
+                    window.location.href=pdfPath
+                }
+            })
+        })
+    })
+</script>
+{% endblock %}

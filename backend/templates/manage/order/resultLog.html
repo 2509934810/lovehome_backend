@@ -1,0 +1,42 @@
+{% extends 'manage/order/base.html' %}
+{% block extrastyle %}
+    <style>
+        /* body{background-color: gray;} */
+        /* .myservice{width: 40%; height: 80vh; margin: 10vh auto; background-color: wheat;}
+        .myservice .connectUser{padding-top: 30vh ; width: 100%; height: 30vh;}
+        .myservice .orderResult{width: 80%; margin: 0 auto;}
+        .myservice .orderResult input{margin-left: 10%;}
+        #submitbtn{display: block; margin: 0 auto; width: 30%; height: 30px;} */
+        .myservice{width: 100%;}
+        .myservice table{width: 80%; text-align: center;}
+    </style>
+{% endblock %}
+{% block mainshow %}
+    <div class="myservice">
+        <table>
+            <tr>
+                <td>回访号</td>
+                <td>订单Id</td>
+                <td>用户账号</td>
+                <td>用户联系方式</td>
+                <td>回访效果</td>
+            </tr>
+            {% for result in results %}
+                <tr>
+                    <td>[[result.id]]</td>
+                    <td>[[result.order.id]]</td>
+                    <td>[[result.order.baseuser.userAc]]</td>
+                    <td>[[result.order.baseuser.user.telephone]]</td>
+                    {% if result.result == 1 %}
+                    <td>差</td>
+                    {% elif result.result == 2 %}
+                    <td>良</td>
+                    {% elif result.result == 3 %}
+                    <td>优  </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+{% endblock %}

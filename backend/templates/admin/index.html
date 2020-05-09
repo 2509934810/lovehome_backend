@@ -1,0 +1,178 @@
+{% extends  'admin/base.html' %}
+{% block title %}
+    <title>管理员</title>
+{% endblock %}
+{% block style %}
+    <style>
+        #MainView{float: right; margin-right: 10%; width: 70%; border-top: 1px solid lightgreen}
+        #MainView .topBar{display: grid; grid-template-columns: 30% 40% 30%;}
+        #MainView .topBar li{float: left; margin-left: 20px; font-size: 15px; width: 25%; height: 40px; text-align: center;}
+        #MainView .topBar li a{display: block; width: 100%; height: 100%; border-radius: 5px; color: black; line-height: 40px;}
+        a:hover{border: 1px solid blue; cursor:pointer;}
+        #MainView .topBar span{line-height: 40px; font-size: 25px;font-weight: bold;}
+
+        #MainView .topBar .explore{margin-left: 3%;}
+        #MainView .topBar .explore input{width: 200px; height: 40px; border-radius: 5px; float: left;}
+        #MainView .topBar .explore input:hover{border: 1px solid gray;}
+        #MainView .topBar .explore a{display: block; width: 60px; height: 40px;line-height: 40px;
+            float: left; margin-left: 20px; background-color: green; border-radius: 5px; font-size: 15px; text-align: center;}
+        #MainView .MainShow{width: 100%;}
+        #MainView .MainShow table{width: 100%; text-align: center;}
+    </style>
+{% endblock %}
+{% block content %}
+<div id="MainView">
+    <div class="topBar clear">
+        <div class="Show l">
+            <ul>
+                <!-- <li><a>整合</a></li> -->
+                <li><select name="selectLevel" style="width: 40px; margin-top: 10px;" onchange="window.location=this.value">
+                    <option disabled>请选择</option>
+                    <option value="[[url_for('admin.selectUser', userType='USER_LOW')]]">普通用户</option>
+                    <option value="[[url_for('admin.selectUser', userType='USER_LOW')]]">普通用户</option>
+                    <option value="[[url_for('admin.selectUser', userType='USER_MID')]]">高级用户</option>
+                    <option value="[[url_for('admin.selectUser', userType='WORKER')]]">线下员工</option>
+                    <option value="[[url_for('admin.selectUser', userType='MANAGE_LOW')]]">普通员工</option>
+                    <option value="[[url_for('admin.selectUser', userType='MANAGE_MID')]]">经理</option>
+                    <option value="[[url_for('admin.selectUser', userType='MANAGE_HIG')]]">技术总监</option>
+                    <option value="[[url_for('admin.selectUser', userType='ADMIN')]]">ADMIN</option>
+                    </select>
+                </li>
+                <li>
+                    <a id="searchActived">激活用户</a>
+                </li>
+            </ul>
+        </div>
+        <div class="explore l">
+            <input type="text" placeholder="请输入搜索的编号" id="searchId">
+            <a id="runSearch">搜索</a>
+        </div>
+        <ul class="CRUD l">
+            <li>
+                <a href="/admin/user/add">添加</a>
+            </li>
+            <li><a id="deleteUser">删除</a></li>
+            <li><a id="changeInfo">修改</a></li>
+        </ul>
+    </div>
+    <div class="MainShow">
+        <table border="1" style="border-collapse: collapse;">
+            <tr>
+                <td><input type="checkbox" id="MainCheck"></td>
+                <td>账号</td>
+                <td>用户名</td>
+                <td>等级</td>
+                <!-- <td>直接隶属</td> -->
+                <td>邮箱</td>
+                <td>手机号</td>
+                <td>激活</td>
+                <td>注册日期</td>
+            </tr>
+            {% if users%}
+                {% for user in users %}
+                    <tr class="tableData">
+                        <td><input type="checkbox" name="check" id="[[user.account]]"></td>
+                        <td><a href="[[url_for('admin.userInfo', account=user.account)]]">[[user.account]]</a></td>
+                        <td>[[user.username]]</td>
+                        {% if user.level == 1 %}
+                            <td>普通用户</td>
+                        {% elif user.level == 2 %}
+                        <td>高级用户</td>
+                        {% elif user.level == 4 %}
+                        <td>线下员工</td>
+                        {% elif user.level == 8 %}
+                        <td>操作员</td>
+                        {% elif user.level == 16 %}
+                        <td>经理</td>
+                        {% elif user.level == 32 %}
+                        <td>总监</td>
+                        {% elif user.level == 64 %}
+                        <td>管理员</td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+                        <!-- <td></td> -->
+                        <td>[[user.email]]</td>
+                        <td>[[user.telephone]]</td>
+                        <td>[[user.actived]]</td>
+                        <td>[[user.pub_date]]</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        $(document).ready(function(){
+            $("#deleteUser").on('click', function () {
+                var checkidList = document.getElementsByName("check");
+                var idList = [];
+                for (k in checkidList){
+                    if(checkidList[k].checked){
+                        console.log(checkidList[k].id);
+                        idList.push(checkidList[k].id);
+                    }
+                }
+                if (idList.length == 0){
+                    alert("操作违法");
+                }else{
+                    var curHref = window.location.protocol +"//" + window.location.host + "/admin/user/delete";
+                    alert("确定删除"+ idList);
+                    window.location=curHref + "?IdList=" + idList;
+                }
+
+            });
+            $("#runSearch").on('click' ,function(){
+                var userAccount = $("#searchId").val();
+                if (userAccount === ''){
+                    alert("must have account");
+                }else{
+                    window.location.href=window.location.protocol +"//" + window.location.host + "/admin/user/select?account=" + userAccount
+                }
+            });
+            $("#searchActived").on('click', function(){
+                var acti = location.search
+                if (acti.indexOf("?") != -1 ){
+                    var chose = acti.substr(1).toString();
+                    console.log(chose, acti);
+                    var head = chose.split("=")[0]
+                    var body = chose.split("=")[1]
+                    console.log(head, body);
+                    if (head === "actived"){
+                        if (body === "True"){
+                            // console.log(body)
+                            window.location.href=window.location.protocol +"//" + window.location.host + "/admin/user/select?actived=" + "False"
+                        }else{
+                            window.location.href=window.location.protocol +"//" + window.location.host + "/admin/user/select?actived=" + "True"
+                        }
+                    }
+                }else{
+                    window.location.href=window.location.protocol +"//" + window.location.host + "/admin/user/select?actived=" + "True"
+                }
+            });
+            $("#changeInfo").on('click', function(){
+                var checkidList = document.getElementsByName("check");
+                var idList = [];
+                for (k in checkidList){
+                    if(checkidList[k].checked){
+                        console.log(checkidList[k].id);
+                        idList.push(checkidList[k].id);
+                    }
+                }
+                if (idList.length == 0){
+                    alert("违法操作")
+                }else if(idList.length > 1){
+                    alert("违法操作")
+                }else{
+                    var account = idList[0];
+                    window.location.href=window.location.protocol +"//" + window.location.host + "/admin/user/change?account=" + account
+                    console.log(account)
+                }
+            })
+        })
+    </script>
+{% endblock %}

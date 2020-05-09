@@ -1,0 +1,24 @@
+{% extends 'manage/service/base.html' %}
+{% block mainshow %}
+    <div class="tableShow">
+        <table>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>员工ID</td>
+                <td>员工账号</td>
+                <td>员工级别</td>
+                <td>管理数量</td>
+            </tr>
+            {% for worker in workers %}
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>[[worker.id[:5]]]</td>
+                    <td><a href="[[url_for('manage.workerInfo', account=worker.userAc)]]">[[worker.userAc]]</a></td>
+                    <td>[[worker.level]]</td>
+                    <td>[[worker.manworkers.all()|length]]</td>
+
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

@@ -1,0 +1,371 @@
+{% extends 'base.html' %}
+
+{% block style %}
+<!-- <link rel="stylesheet" href="../static/css/common.css"> -->
+<style>
+    #banner{}
+    #IndexTitle{text-align: center; font-size: 20px; font-family:Verdana, Geneva, Tahoma, sans-serif; margin-bottom: 20px;}
+    #successList{margin-top: 20px; border: 1px solid lightgray;}
+    #successList .SuccessTitle{color: brown; font-weight: bold; font-size: 40px; letter-spacing: 20px;}
+    #successList .Sample ul li{float: left; width: 20%; margin: 2%; display: block; border: 1px solid black;}
+    #successList .Sample ul li div img{margin: 0 auto; display: block;}
+    #successList .Sample ul li div p{overflow: hidden; text-indent: 2;}
+    #successList .Sample ul li div span{text-align: center;}
+    #successList .Sample ul li div button{display: block; width: 40%; margin-right: 10%; margin: 0 auto;
+       color:black; background-color: green;}
+    .comShow{width: 80%; border: 1px solid lightgrey;
+         margin: 0 auto; display: grid; grid-template-columns: repeat(12, 1fr);}
+    .comShow .leftShow{grid-column-start: 2; grid-column-end: 5;}
+    .comShow .rightP{grid-column-start: 5; grid-column-end: 11;
+        border: 1px solid lightgrey; padding: 1px; font-size: 16px; text-align: left;}
+    .telecon{width: 30px; height: 100px; position: fixed; right: 40px; top: 200px;
+          }
+    .telecon div{border: 1px solid blue; background-color: aqua;}
+    .telecon div a{cursor: pointer;}
+    .telecon div h2{text-align: center;}
+    .clear::after{content: ''; clear: both; display: block;}
+    .quickOrder{width: 30px; height: 100px; position: fixed; left: 40px; top: 200px;}
+    .quickOrder a{display: block; background-color: aqua; cursor: pointer;}
+    .quickOrder h2{text-align: center;}
+    #connectForm{position: fixed; width: 400px; height: 300px;top: 200px; right: 0px; z-index: 10; opacity: 0.9; background-color: white; }
+    #connectForm .chatbox{display: block; width: 98%; height: 70%; border: 1px solid lightgray; background-color: gray;}
+    #connectForm .chatbox ul{width: 80%;margin: 0 auto;}
+    #connectForm .chatbox ul li{margin-top: 2px; font-size: 18px; font-weight: bold;}
+    /* #connectForm f{display: block; width: 98%; height: 80%;} */
+    /* #connectForm  */
+    #connectForm .sendBox{margin-top: 2px; width: 98%; height: 20%; border: 1px solid lightgray; border-radius: 20px; margin: 0 auto;}
+    #connectForm .sendBox textarea{display: block; width: 100%; height: 100%; font-size: 20px;}
+    #connectForm .sendBtn{margin-top: 2px; z-index: 11; opacity: 1;}
+    #connectForm .sendBtn button{display: block; width: 30%; height: 30px; margin: 0 auto;background-color: green;cursor: pointer; z-index: 11;}
+</style>
+{% endblock %}
+{% block content %}
+
+ <div id="banner" class="container-fluid">
+  <ul class="banner_list">
+    <li style="background-image: url('../../static/img/banner.jpg');background-size: 100%; background-repeat: no-repeat;" class="active">
+      <a href="#"></a>
+    </li>
+  </ul>
+</div>
+<div id="IndexTitle" class="container-fluid">
+  <p>我们通过您的生活方式</p>
+  <br>
+  <p>为您定制专业的家政服务</p>
+</div>
+<div id="connectForm" style="display: none;">
+  <div class="chatbox">
+    <ul>
+      <li class="receInfo"> 1</li>
+      <li class="receInfo"> 1</li>
+      <li class="receInfo"> 1</li>
+      <li class="receInfo"> 1</li>
+      <li class="receInfo"> 1</li>
+      <li class="receInfo"> 1</li>
+      <li class="receInfo"> 1</li>
+      <li class="receInfo"> 1</li>
+    </ul>
+  </div>
+  <div class="sendBox">
+    <textarea rows="4" id="msgInfo"></textarea>
+  </div>
+  <div class="sendBtn clear">
+    <button class="l" id="sendInfo">send</button>
+    <button class="r" id="closechat">close</button>
+  </div>
+</div>
+<div class="telecon">
+  <div>
+    <a id="connectUs">
+      <img src="[[url_for('static', filename='img/tele.jpg')]]" width="30px" height="50px">
+      <h2>联</h2>
+      <h2>系</h2>
+      <h2>我</h2>
+      <h2>们</h2>
+    </a>
+  </div>
+</div>
+<div class="quickOrder">
+  <a href="[[url_for('user.quickO')]]">
+    <h2>快</h2>
+    <h2>速</h2>
+    <h2>出</h2>
+    <h2>单</h2>
+  </a>
+  </div>
+<div class="comShow">
+  <!-- <h2 style="text-align: center;">公司简介</h2> -->
+  <div class="leftPho">
+    <img src="[[url_for('static', filename='img/index-logo.png')]]" >
+  </div>
+  <div class="rightP">
+    <p>1、公司概况：这里面可以包括注册时间，注册资本，公司性质，技术力量，规模，员工人数，员工素质等;
+
+      2、公司发展状况:公司的发展速度,有何成绩,有何荣誉称号等;
+
+      3、公司文化:公司的目标,理念,宗旨,使命,愿景,寄语等;
+
+      4、公司主要产品:性能,特色,创新,超前;
+
+      5、销售业绩及网络:销售量,各地销售点等;
+
+      6、售后服务:主要是公司售后服务的承诺。
+
+      以上几个点都是重要的因素。</p>
+      <a style="float: right;" href="#">更多</a>
+  </div>
+</div>
+<div class="BaseShow">
+  <div>
+  </div>
+  <div>
+  </div>
+</div>
+<div id="successList" class="container">
+  <div class="SuccessTitle">
+    <h2 style="text-align: center;">成功案例</h2>
+    <!-- <h2>快速出单</h2> -->
+  </div>
+  <div class="Sample">
+    <ul class="clear">
+      <li>
+        <div>
+          <img src="../static/img/worker.jpeg" title="" alt="" width="99%" height="100px">
+          <div>
+            <p>小王在##################################表现特别优秀</p>
+          </div>
+          <div>
+            <span>优秀员工姓名: 王大王</span>
+          </div>
+          <div>
+            <span>状态: 空闲</span>
+          </div>
+          <div>
+            <button >预约</button>
+          </div>
+        </div>
+      <li>
+        <div>
+          <img src="../static/img/worker.jpeg" title="" alt="" width="99%" height="100px">
+          <div>
+            <p>小王在##################################表现特别优秀</p>
+          </div>
+          <div>
+            <span>优秀员工姓名: 王大王</span>
+          </div>
+          <div>
+            <span>状态: 空闲</span>
+          </div>
+          <div>
+            <button >预约</button>
+          </div>
+        </div>
+      <li>
+        <div>
+          <img src="../static/img/worker.jpeg" title="" alt="" width="99%" height="100px">
+          <div>
+            <p>小王在##################################表现特别优秀</p>
+          </div>
+          <div>
+            <span>优秀员工姓名: 王大王</span>
+          </div>
+          <div>
+            <span>状态: 空闲</span>
+          </div>
+          <div>
+            <button >预约</button>
+          </div>
+        </div>
+      <li>
+        <div>
+          <img src="../static/img/worker.jpeg" title="" alt="" width="99%" height="100px">
+          <div>
+            <p>小王在##################################表现特别优秀</p>
+          </div>
+          <div>
+            <span>优秀员工姓名: 王大王</span>
+          </div>
+          <div>
+            <span>状态: 空闲</span>
+          </div>
+          <div>
+            <button >预约</button>
+          </div>
+        </div>
+      <li>
+        <div>
+          <img src="../static/img/worker.jpeg" title="" alt="" width="99%" height="100px">
+          <div>
+            <p>小王在##################################表现特别优秀</p>
+          </div>
+          <div>
+            <span>优秀员工姓名: 王大王</span>
+          </div>
+          <div>
+            <span>状态: 空闲</span>
+          </div>
+          <div>
+            <button >预约</button>
+          </div>
+        </div>
+      <li>
+        <div>
+          <img src="../static/img/worker.jpeg" title="" alt="" width="99%" height="100px">
+          <div>
+            <p>小王在##################################表现特别优秀</p>
+          </div>
+          <div>
+            <span>优秀员工姓名: 王大王</span>
+          </div>
+          <div>
+            <span>状态: 空闲</span>
+          </div>
+          <div>
+            <button >预约</button>
+          </div>
+        </div>
+      <li>
+        <div>
+          <img src="../static/img/worker.jpeg" title="" alt="" width="99%" height="100px">
+          <div>
+            <p>小王在##################################表现特别优秀</p>
+          </div>
+          <div>
+            <span>优秀员工姓名: 王大王</span>
+          </div>
+          <div>
+            <span>状态: 空闲</span>
+          </div>
+          <div>
+            <button >预约</button>
+          </div>
+        </div>
+      <li>
+        <div>
+          <img src="../static/img/worker.jpeg" title="" alt="" width="99%" height="100px">
+          <div>
+            <p>小王在##################################表现特别优秀</p>
+          </div>
+          <div>
+            <span>优秀员工姓名: 王大王</span>
+          </div>
+          <div>
+            <span>状态: 空闲</span>
+          </div>
+          <div>
+            <button >预约</button>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div id="compare" class="container-fluid" style="clear: both;">
+
+</div>
+
+{% endblock %}
+
+{% block script %}
+  <script crossorigin="anonymous" integrity="sha384-HHKD5G6fqvxz/wBz7BFYeOPzBKELGIZv5l5HAECcXD3zdAS6n8OppmPH9ZxGXY0G" src="https://lib.baomitu.com/socket.io/2.3.0/socket.io.js"></script>
+  <script>
+    $(document).ready(function(){
+      const instance = axios.create({
+        baseURL: location.protocol + "//" + location.host,
+        timeout: 5000,
+        headers: {'lei': 'test1'},
+      })
+      // console.log()
+      $("#connectUs").on("click", function(){
+        var form = document.getElementById("connectForm")
+        form.style.display = "block";
+        var msgInfo = document.getElementsByClassName("receInfo")
+        instance({
+          method: 'post',
+          url: '/chat/hello',
+          data: {
+            data: "hello"
+          }
+        })
+        .then(function(rsp){
+          console.log(rsp)
+          if (rsp.data.code == 200){
+            for (var i=0; i<msgInfo.length; i++){
+              if (i < msgInfo.length-1){
+                msgInfo[i] = msgInfo[i+1]
+              }else{
+                // console.log(msgInfo)
+                msgInfo[String(i)].innerHTML = rsp.data.data
+              }
+            }
+          }else{
+            console.log("error")
+            msgInfo[String(i)].innerHTML = rsp.data.data
+          }
+        })
+          // function(rsp){
+          //   if (rsp.code == 200){
+          //     for (var i=0; i< msgInfo.length; i++){
+          //       if (i < msgInfo.length -1){
+          //         msgInfo[i] = msgInfo[i+1]
+          //       }else{
+          //         msgInfo[String(i)].innerHTML = rsp.data
+          //       }
+          //     }
+          //   }else{
+          //     msgInfo[-1].innerHTML = "error"
+          //   }
+
+      })
+      $("#sendInfo").on("click", function(){
+        // var form = document.getElementById("connectForm")
+        // form.style.display = "none";
+        var msg = $("#msgInfo").val()
+        var msgInfo = document.getElementsByClassName("receInfo")
+        if (msg == ""){
+
+        }else{
+          instance({
+            method: 'post',
+            url: '/chat/sendmsg',
+            // transformRequest: [function (data) {
+            //     // 对 data 进行任意转换处理
+            //     return Qs.stringify(data)
+            // }],
+            data: {
+              message: msg,
+            }
+          })
+          .then(function(rsp){
+            // console.log(rsp)
+            if (rsp.data.code == 200){
+              for (var i=0; i<msgInfo.length; i++){
+                if (i < msgInfo.length-1){
+                  console.log(typeof i)
+                  console.log(msgInfo[i+1])
+                  msgInfo[i].innerHTML = msgInfo[i+1].innerHTML
+                  if (msgInfo[i+1].getAttribute("site") == "right"){
+                    msgInfo[i].setAttribute("site", "right")
+                    msgInfo[i].style = "text-align:right"
+                  }
+                }else{
+                  // console.log(msgInfo)
+                  msgInfo[i].style = "text-align:right"
+                  msgInfo[i].setAttribute("site", "right")
+                  var name = document.createElement("p")
+                  name.innerHTML = rsp.data.from
+                  msgInfo[i].append(name)
+                  msgInfo[i].innerHTML = rsp.data.data
+                }
+              }
+            }else{
+              console.log("error")
+              msgInfo[String(i)].innerHTML = rsp.data.data
+            }
+          })
+        }
+      })
+    })
+  </script>
+{% endblock %}

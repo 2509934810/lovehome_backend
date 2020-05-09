@@ -1,0 +1,82 @@
+{% extends 'admin/base.html' %}
+
+{% block style %}
+<style>
+    .MainView{width: 80%; float: right;}
+    .MainView .numLoc{width: 100%;}
+    .MainView .numLoc span{display: block; width: 20%; margin-left: 3%;
+        float: left; line-height: 30px; text-align: center;}
+    .MainView .myservice table{width: 100%; border-collapse: collapse; text-align: center; line-height: 24px;}
+    .MainView .sendSalary{ width: 30%; height: 28px; margin: 10px auto;}
+    .MainView .sendSalary a{display: block; width: 95%; height: 26px; text-align: center; line-height: 26px; cursor: pointer;
+        background-color: aquamarine; }
+        .MainView .sendSalary a:hover{border: 1px solid blue}
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="MainView">
+        <div>
+            <span><a href="#">发放记录</a></span>
+        </div>
+        <div class="numLoc clear">
+            <span>普通员工 : [[lineworkerNum]]</span>
+            <span>操作员 : [[workerNum]]</span>
+            <span>管理者 : [[manNum]]</span>
+            <span>当前月份： [[time.strftime("%Y-%m")]]</span>
+        </div>
+        <div class="myservice">
+            <table border="1">
+                <tr>
+                    <td><a>团队名称</a></td>
+                    <td>团队领导</td>
+                    <td>团队人数</td>
+                    <td>服务次数</td>
+                    <td>应发工资</td>
+                    <td>操作栏</td>
+                </tr>
+                {% for econ in econResult %}
+                <tr>
+                    <td>[[econ.name]]团队</td>
+                    <td>[[econ.leader]]</td>
+                    <td>[[econ.num]]</td>
+                    <td>[[econ.orderNum]]</td>
+                    <td>[[econ.salary]]</td>
+                    <td>发放</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <div class="sendSalary">
+                {% if flag == True %}
+                    <a>已发放本月工资</a>
+                    <span>已发放 ：[[salary]]元 </span>
+                {% else %}
+                    <a id="spreadSalary">发放工资</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(document).ready(function(){
+
+            $("#spreadSalary").on("click", function(){
+                axios({
+                    url: "/admin/manage/salary/spread",
+                    method: "post",
+                    data: {
+
+                    }
+                }).then(function(rsp){
+                    if(rsp.data.code == 200){
+                        alert("发放success")
+                    }else{
+                        alert("发放失败")
+                    }
+                })
+            })
+        })
+    </script>
+{% endblock %}

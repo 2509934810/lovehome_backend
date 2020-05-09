@@ -1,0 +1,29 @@
+[[source]]
+name = "pypi"
+url = "https://mirrors.aliyun.com/pypi/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+flask = "*"
+flask-sqlalchemy = "*"
+python-dotenv = "*"
+pymysql = "*"
+flask-redis = "*"
+flask-celery = "*"
+celery = "*"
+flask-celery-helper = "*"
+pre-commit = "*"
+requests = "*"
+flask-cors = "*"
+flask-socketio = "*"
+pdfkit = "*"
+pypdf2 = "*"
+flask-migrate = "*"
+reportlab = "*"
+flask-script = "*"
+uwsgi = "*"
+
+[requires]
+python_version = "3.8.0"

@@ -1,0 +1,42 @@
+{% extends 'admin/base.html' %}
+
+{% block style %}
+<style>
+    body{background-color: lightgray;}
+    .MainView{width: 80%; float: right;}
+    .MainView .setForm{width: 40%; margin: 30px auto;}
+    .MainView .setForm .inputInfo{display: grid; grid-template-columns: repeat(12, 1fr); margin-top: 10px;}
+    .MainView .setForm .inputInfo label{grid-column-start: 1; grid-column-end: 4; text-align: center;}
+    .MainView .setForm .inputInfo select{grid-column-start: 5; grid-column-end: 8;}
+    .MainView .setForm .inputInfo input{grid-column-start: 5; grid-column-end: 9;}
+    .MainView .setForm .confirmBtn{margin-top: 20px;}
+    .MainView .setForm .confirmBtn input{display: block; width: 40%; height: 24px; margin: 0 auto;}
+
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="MainView">
+        <div class="setForm">
+            <form method="POST" onsubmit="return validate()">
+                <div class="inputInfo">
+                    <label for="levelType">
+                        账号
+                    </label>
+                    <input type="text" name="account" value="[[user.account]]" readonly>
+                </div>
+                <div class="inputInfo">
+                    <label>职位</label>
+                    <input type="text" placeholder="[[user.level]]" readonly>
+                </div>
+                <div class="inputInfo">
+                    <label>数额</label>
+                    <input type="number" placeholder="0.00" name="salaryNum">
+                </div>
+                <div class="confirmBtn">
+                    <input type="submit" value="提交">
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

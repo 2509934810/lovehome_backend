@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>管理</title>
+{% endblock %}
+{% block style %}
+    <style>
+
+        .Main{display: grid; grid-template-columns: repeat(12, 1fr);}
+        /* .Main .InnerCon{width: 90%;} */
+        .Main .leftbar{grid-column-start: 1; grid-column-end: 3;
+            background-color: lightskyblue;  height: 980px;}
+        .Main .leftbar ul{width: 80%; margin: 0 auto;  }
+        .Main .leftbar ul li{margin-top: 20px; text-align: center; background-color: aqua; height: 30px;}
+        .Main .leftbar ul li a{display: block; line-height: 30px; text-align: center; padding: 1px solid;}
+        .Main .leftbar ul li a:hover{border: 1px solid blue; cursor: pointer;}
+        .container{width: 95%; margin: 0 auto;}
+        .Main .MainShow{grid-column-start: 4; grid-column-end: 13; border: 1px solid lightcyan;}
+        .Main .MainShow .comBar{line-height: 30px; margin-top: 5px; margin-bottom: 5px;}
+        .Main .MainShow .comBar .btnGroup ul li{float: left; margin-left: 5%; }
+        .Main .MainShow .comBar .btnGroup ul li a:hover{cursor: pointer;}
+        /* .Main .MainShow .tableShow {width: 100%;} */
+        .Main .MainShow .tableShow table{width: 96%; text-align: center; margin: 0 auto;}
+
+    </style>
+    {% block extrastyle %}
+    {% endblock %}
+{% endblock %}
+{% block content %}
+<div class="Main container">
+    <!-- <div class="InnerCon"> -->
+    <div class="leftbar">
+        <ul>
+            <li><a href="[[url_for('manage.index')]]">员工管理</a></li>
+            <!-- <li><a>员工</a></li> -->
+            {% if g.user.level > 8 %}
+                {% if g.user.actived==True %}
+                    <li><a href="[[url_for('manage.service')]]">服务管理</a></li>
+                {% else %}
+                    <li><a href="[[url_for('manage.service')]]" disabled>服务管理</a></li>
+                {% endif %}
+            {% endif %}
+            <li><a href="[[url_for('manage.order')]]">订单管理</a></li>
+            <li><a href="[[url_for('user.reqLists')]]">投诉邮箱</a></li>
+            <li><a>聊天室</a></li>
+        </ul>
+    </div>
+    <div class="MainShow">
+        {% block mainshow %}
+        {% endblock %}
+    </div>
+</div>
+{% endblock %}

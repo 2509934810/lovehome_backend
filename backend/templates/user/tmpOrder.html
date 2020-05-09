@@ -1,0 +1,77 @@
+{% extends 'user/worker/base.html' %}
+
+{% block extraStyle %}
+    <style>
+        #startBtn{width: 40%; margin: 0 auto;}
+        #startBtn ul li{float: left; margin-left: 5%; width: 40%;}
+        #startBtn ul li a{ display: block; width: 100%; height: 30px; line-height: 30px;
+            padding: 1px; margin: 0 auto; background-color: aqua; text-align: center;}
+        #startBtn a:hover{border: 1px solid blue; cursor: pointer;}
+        table tr td{width: 10%;}
+    </style>
+{% endblock %}
+
+{% block mainshow %}
+    <div class="myservice">
+        {% for order in orders %}
+        <table>
+            <tr>
+                <td>
+                    临时订单号
+                </td>
+
+                <td>服务类型</td>
+
+                <td>开始时间</td>
+                <td>服务人员年龄（+-10)</td>
+                <td>服务人员性别</td>
+                <td>状态</td>
+                <td>额外状态</td>
+            </tr>
+            <tr>
+                <td title=" [[order.Id]]">
+                    [[order.Id[:10]]]
+                </td>
+                {% if order.serviceType == 1 %}
+                    <td>月嫂</td>
+                {% elif order.serviceType == 2 %}
+                    <td>小时工</td>
+                {% elif order.serviceType == 4 %}
+                    <td>保姆</td>
+                {% else %}
+                    <td>[[order.serviceType]]</td>
+                {% endif %}
+                <td>[[order.preStartTime]]</td>
+                <td>[[order.age]]</td>
+                {% if order.sex == 1 %}
+                    <td>男</td>
+                {% elif order.sex == 2 %}
+                    <td>女</td>
+                {% else %}
+                    <td>都可以</td>
+                {% endif %}
+                {% if order.quickType == 1 %}
+                    <td>未处理</td>
+                {% elif order.quickType ==2 %}
+                    <td>处理中</td>
+                {% elif order.quickType ==4 %}
+                    <td>已处理</td>
+                {% else %}
+                <td>None</td>
+                {% endif %}
+                {% if order.quickType == 2 %}
+                <td><a href="[[url_for('service.req', id=order.serviceLink)]]">点击查看详情</a></td>
+                {% endif %}
+                <!-- <td>[[order.orderType]]</td> -->
+            </tr>
+        </table>
+        <!-- <div id="startBtn">
+            <ul>
+                <li><a href="[[url_for('user.orderque', id=order.id)]]">申诉</a></li>
+                <li><a href="[[url_for('user.stop', id=order.id)]]">结束订单</a></li>
+            </ul>
+        </div> -->
+        {% endfor %}
+    </div>
+
+{% endblock %}

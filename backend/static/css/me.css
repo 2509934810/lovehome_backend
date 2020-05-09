@@ -1,0 +1,102 @@
+
+.m-padding-mini{
+    padding: 0.2em !important;
+}
+.m-padding-tiny{
+    padding: 0.3em !important;
+}
+.m-padding-tb-mini{
+    padding-top: 0.2em !important;
+    padding-bottom: 0.2em !important;
+}
+.m-padding-tb-tiny{
+    padding-top: 0.5em !important;
+    padding-bottom: 0.5em !important;
+}
+
+.m-padding-tb-small{
+    padding-top: 0.8em !important;
+    padding-bottom: 0.8em !important;
+}
+.m-padding-tb{
+    padding-top: 1em !important;
+    padding-bottom: 1em !important;
+}
+.m-padding-tb-large{
+    padding-top: 3em !important;
+    padding-bottom: 3em !important;
+}
+.m-padding-tb-huge{
+    padding-top: 4em !important;
+    padding-bottom: 4em !important;
+}
+.m-padding-tb-massive{
+    padding-top: 5em !important;
+    padding-bottom: 5em !important;
+}
+
+/* .m-container{
+    width: ;
+} */
+
+/* .m-padding-lr{
+    padding-left: ;
+} */
+
+.m-text-thin{
+    font-weight: 300 !important;
+}
+
+.m-text-spaced{
+    letter-spacing: 1px !important;
+}
+.m-text{
+    line-height: 1.8;
+    opacity: 8.8 !important;
+    display: inline-block !important;
+
+}
+.m-text-lined{
+    line-height: 1.8;
+}
+
+.m-opacity-mini{
+    opacity: 8.8 !important;
+}
+
+.m-margin-tb-tiny{
+    margin-top: 0.3em !important;
+    margin-bottom: 0.3 !important;
+} 
+.m-margin-tb-small{
+    margin-top: 0.5em !important;
+    margin-bottom: 0.5em !important;
+}
+.m-inline-block{
+    display: inline-block !important;
+}
+.m-black{
+    color: #333 !important;
+}
+
+.m-right-top{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.m-mobile-show{
+    display: none !important;
+}
+@media screen and (max-width: 768px){
+    .m-mobile-hide{
+        display: none !important;
+    }
+    .m-mobile-show{
+        display: block !important;
+    }
+}
+/* @media screen and (max-width: 768px){
+    .m-mobile-hide{
+        display: none !important;
+    }
+} */

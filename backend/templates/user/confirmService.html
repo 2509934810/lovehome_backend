@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %} <title>预定</title>{% endblock %}
+
+{% block style %}
+    <style>
+        .confirmForm{width: 40vw; height: 80vh; margin: 0 auto; background-color: burlywood; margin-top: 20px;}
+        .confirmForm h1{text-align: center;}
+        .confirmForm form{display: block;}
+        .confirmForm form .inputdata{display: grid; grid-template-columns: repeat(12, 1fr); margin-top: 10px; font-size: 20px; margin-top: 20px;}
+        .confirmForm form .inputdata label{grid-column-start: 1; grid-column-end: 5; text-align: center;}
+        .confirmForm form .inputdata input{grid-column-start: 5; grid-column-end: 11;}
+        .confirmForm form .btn{margin-top: 30px;}
+        .confirmForm form .btn input{display: block; width: 30%; height: 28px; background-color: aqua; margin: 0 auto;}
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="Main">
+        <div class="confirmForm">
+            <h1>确定订单</h1>
+            <form method="POST">
+                <div class="inputdata">
+                    <label>我的账号</label>
+                    <input type="text" value="[[user.account]]" name="account" readonly>
+                </div>
+                <div class="inputdata">
+                    <label>我的名称</label>
+                    <input type="text" value="[[user.username]]" name="username" readonly>
+                </div>
+                <div class="inputdata">
+                    <label>我的联系方式</label>
+                    <input type="text" value="[[user.telephone]]" name="telephone" readonly>
+                </div>
+                <div class="inputdata">
+                    <label>我的服务地点</label>
+                    <input type="text" value="[[user.addr]]" name="addr">
+                </div>
+                <div class="inputdata">
+                    <label>服务人员账号</label>
+                    <input type="text" value="[[service.lovelineworker.userAc]]" name="serAccount" readonly>
+                </div>
+                <div class="inputdata">
+                    <label>服务开始时间</label>
+                    <input type="date" name="serTime">
+                </div>
+                <div class="btn">
+                    <input type="submit" value="提交">
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'admin/manage/base.html' %}
+
+{% block style %}
+    <style>
+        body{background-color: lightgray;}
+        .MainView{width: 80%; float: right;}
+        .confirmForm{width: 40vw; height: 80vh; margin: 60px auto;}
+        .confirmForm .inputData{display: grid; grid-template-columns: repeat(12, 1fr); margin-top: 10px;}
+        .confirmForm .inputData label{grid-column-start: 1; grid-column-end: 4; text-align: center;}
+        .confirmForm .inputData input{grid-column-start: 4; grid-column-end: 10;}
+        #confirmBtn{display: block; width: 30%; height: 24px; margin: 0 auto; margin-top: 20px;}
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="MainView">
+        <div class="confirmForm">
+            <form method="POST">
+                <div class="inputData">
+                    <label>
+                        帐号
+                    </label>
+                    <input type="text" value="[[id]]" name="id" readonly>
+                </div>
+                <div class="inputData">
+                    <label>
+                        800
+                    </label>
+                    <input name="card1" type="number">
+                </div>
+                <div class="inputData">
+                    <label>
+                        500
+                    </label>
+                    <input type="number" name="card2">
+                </div>
+                <div class="inputData">
+                    <label>
+                        300
+                    </label>
+                    <input type="number" name="card3">
+                </div>
+                <input id="confirmBtn" type="submit" value="提交">
+            </form>
+        </div>
+    </div>
+{% endblock %}

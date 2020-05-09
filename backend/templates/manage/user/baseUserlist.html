@@ -1,0 +1,71 @@
+{% extends 'manage/user/base.html' %}
+
+{% block extrastyle %}
+    <style>
+        .topInfo span{margin-left: 4%;}
+        .tableshow{width: 100%; margin-top: 10px;}
+        .tableshow table{width: 90%; text-align: center; border-collapse: collapse;}
+    </style>
+{% endblock %}
+{% block mainshow %}
+    <div class="topInfo">
+        <span>优惠券数量 : [[prefercard|length]] </span>
+        <span>300卡 : [[cardDict['300']|length]]</span>
+        <span>500卡 : [[cardDict['500']|length]]</span>
+        <span>800卡 : [[cardDict['800']|length]]</span>
+
+    </div>
+    <div class="tableshow">
+        <table border="1">
+            <tr>
+                <td>帐号</td>
+                <td>名称</td>
+                <td>联系方式</td>
+                <td>身份</td>
+                <td>服务数量</td>
+                <td>好评数</td>
+                <td>注册时间</td>
+                <!-- <td>总消费额度</td> -->
+                <td>操作模块</td>
+                <!-- <td>服务偏好</td> -->
+            </tr>
+            {% for info in users %}
+                <tr>
+                    <td>
+                        [[info.account]]
+                    </td>
+                    <td>
+                        [[info.username]]
+                    </td>
+                    <td>
+                        [[info.telephone]]
+                    </td>
+                    <td>
+                        {% if info.level == 1 %}
+                        普通用户
+                        {% elif info.level == 2 %}
+                        高级用户
+                        {% else %}
+                        其他
+                        {% endif %}
+                    </td>
+                    <td>
+                        [[info.baseuserLink.first().orderLink.all()|length]]
+                    </td>
+                    <td>
+                        [[info.baseuserLink.first().orderLink.filter_by(orderReview = 4).all()|length]]
+                    </td>
+                    <td>
+                        [[info.pub_date]]
+                    </td>
+                    <!-- <td>
+                        [[info.baseuserLink.first().orderLink]]
+                    </td> -->
+                    <td>
+                        <a href="[[url_for('manage.sendcard')]]?id=[[info.account]]">赠送</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

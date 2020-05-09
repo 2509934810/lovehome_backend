@@ -1,0 +1,49 @@
+{% extends 'manage/service/base.html' %}
+{% block mainshow %}
+    <div class="tableShow">
+        <table>
+            <tr>
+                <td><input type="checkbox"></td>
+                <td>员工ID</td>
+                <td>员工账号</td>
+                <td>员工级别</td>
+                <td>激活状态</td>
+            </tr>
+            {% for worker in workers %}
+                <tr>
+                    <td><input type="checkbox" name="check" id="[[worker.userAc]]"></td>
+                    <td>[[worker.id[:5]]]</td>
+                    <td>[[worker.userAc]]</td>
+                    <td>[[worker.level]]</td>
+                    <td>False</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(document).ready(function(){
+            $("#despread").on("click", function(){
+                var checkList = document.getElementsByName("check")
+                // console.log(checkList)
+                checkListP = []
+                for (i in checkList){
+                    if (checkList[i].checked){
+                        // console.log(checkList[i].id)
+                        checkListP.push(checkList[i].id)
+                    }
+                }
+                if (checkListP.length !== 1 ){
+                    alert("不合法操作")
+                }else{
+                    // console.log(checkListP.length)
+                    href = window.location.protocol + "//" + window.location.host + "/manage/service/line/despread/" + checkListP
+                    console.log(href)
+                    window.location.href = href
+                }
+            })
+        })
+    </script>
+{% endblock %}
