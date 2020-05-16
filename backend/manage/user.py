@@ -5,7 +5,10 @@ import hashlib
 from . import manage_bp
 from backend.models import User, db, LoveWorker, LoveLineWorker
 from backend.models import UserAddr
+from backend.utils.generatePng import generate
 # from sqlalchemy.exc import *
+import random
+import os
 @manage_bp.route("/userInfo")
 def userInfo():
     user = g.user
@@ -144,6 +147,10 @@ def activedUser():
         tele = formdata["telephone"]
         email = formdata["email"]
         # 验证效验码
+        photo = request.files.get("upload")
+        fileend = photo.filename.split(".")[-1]
+        if fileend not in ["jpg", "png", "jpeg"]:
+            return redirect(url_for("user.serviceReq"))
         try:
             if username and sex and age and addr and tele and email:
                 buser = User.query.filter_by(account=user.account).first()
@@ -152,14 +159,33 @@ def activedUser():
                 # buser.addr = addr
                 buser.telephone = tele
                 buser.email = email
+                buser.age=age
                 # 检查是否可以激活
                 buser.addr = addr
                 buser.actived = True
                 # buser.confirmCode
+                basepath = os.path.abspath(os.path.curdir)
+                photopath = os.path.join(
+                    basepath,
+                    "backend/static/img/{}-{}.jpg".format(
+                        user.account, random.randrange(1, 100000)
+                    ),
+                )
+                photo.save(photopath)
+                rsp = generate(photopath)
+                print(rsp)
+                if rsp.get("code")== 200:
+                    headPhotoPath=rsp.get("path")
+                    os.remove(photopath)
+                else:
+                    return jsonify({"code": 500})
+                buser.head_photo=headPhotoPath
                 db.session.add(buser)
-                db.session, commit()
+                db.session.commit()
         except Exception as e:
             print(e)
+            return redirect(url_for("manage.userInfo"))
+        finally:
             return redirect(url_for("manage.userInfo"))
     else:
         province = list(set([addr.province for addr in UserAddr.query.all()]))

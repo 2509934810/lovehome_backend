@@ -21,7 +21,7 @@
         <div class="confirmForm">
             <div class="innerForm">
                 <h2 style="text-align: center; line-height: 30px;">激活你的用户</h2>
-                <form method="POST">
+                <form method="POST" enctype="multipart/form-data">
                     <div class="inputdata">
                         <label>
                             名称
@@ -74,6 +74,12 @@
                             邮箱
                         </label>
                         <input type="email" name="email">
+                    </div>
+                    <div class="inputdata">
+                        <label>
+                            头像
+                        </label>
+                        <input type="file" name="upload">
                     </div>
                     <div class="submitdata">
                         <input type="submit" value="提交">

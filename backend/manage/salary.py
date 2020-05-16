@@ -14,6 +14,7 @@ def salarystream():
             .baseuserLink.first()
             .orderLink.all()
         )
+        print(orders)
         if orders:
             try:
                 ecnoList = [

@@ -41,9 +41,13 @@
                     {% endif %}
                 {% endif %}
                 {% if g.user.actived == True %}
-                    <li><a href="[[url_for('manage.salarystream')]]">资金流转</a></li>
+                    {% if g.user.level > 8 %}
+                         <li><a href="[[url_for('manage.salarystream')]]">资金流转</a></li>
+                    {% endif %}
                 {% else %}
-                    <li><a>资金流转</a></li>
+                    {% if g.user.level > 8 %}
+                        <li><a href="[[url_for('manage.salarystream')]]">资金流转</a></li>
+                    {% endif %}
                 {% endif %}
                 <li><a href="[[url_for('user.reqLists')]]">投诉邮箱</a></li>
                 <li><a href="[[url_for('chat.chat')]]">聊天室</a></li>
@@ -61,7 +65,7 @@
                     <td>年龄</td>
                     <td>[[user.age]]</td>
                     <td colspan="2" rowspan="2">
-                        <img src="#" title="头像" alt="头像" width="40px" height="80px">
+                        <img src="http://[[avator]]/[[user.head_photo]]" title="头像" alt="头像" height="80px">
                     </td>
                 </tr>
                 <tr>

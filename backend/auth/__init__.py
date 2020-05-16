@@ -2,8 +2,8 @@ from flask import Blueprint, render_template, redirect
 from flask import request, session, url_for, g
 from flask import flash
 from werkzeug.security import check_password_hash, generate_password_hash
-from backend.models import User, BaseUser, db
-
+from backend.models import User, BaseUser, db, loginTb
+from backend.utils.generateLogin import generateSite
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
 
 
@@ -50,11 +50,24 @@ def login():
             if check_password_hash(user.password, password):
                 session["userId"] = user.account
                 g.user = user
+                print(request.path)
+                site = generateSite("117.136.91.236")
+                print(site)
+                try:
+                    generate(site, g.user.account)
+                except Exception as e:
+                    print("api error", e)
                 return redirect(url_for("index"))
         else:
             return redirect(url_for("auth.login"))
     return render_template("auth/login.html")
 
+
+def generate(site, userId):
+    info = loginTb()
+    info.createData(userId=userId, loginSite = "{}_{}".format(site.get("province"), site.get("city")))
+    db.session.add(info)
+    db.session.commit()
 
 @auth_bp.route("/logout")
 def logout():

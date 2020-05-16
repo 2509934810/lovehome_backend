@@ -10,7 +10,7 @@ from flask_redis import FlaskRedis
 
 # from flask_celery import Celery
 from flask_cors import CORS
-
+from backend.models import Info
 
 redis_store = FlaskRedis()
 
@@ -21,7 +21,7 @@ ENV = {"development": DevConfig, "production": ProConfig}
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
-    # app.add_template_global(os.environ.get("FRONT_1"), "front1")
+    app.add_template_global(os.environ.get("AVATOR_SERVER"), "avator")
     if test_config:
         app.config.from_object(test_config)
     else:
@@ -87,7 +87,14 @@ def create_app(test_config=None):
 
     @app.route("/")
     def index():
-        return render_template("index.html")
+        # serviceAddr = request.args.get("serviceAddr")
+        # serviceType = Info.SERVICETYPE.get(request.args.get("serviceType"))
+        serviceType = None
+        if serviceType:
+            services = Info.query.filter(db.and_(Info.serviceType==serviceType, Info.access==True)).all()
+        else:
+            services = Info.query.filter_by(access=True).all()
+        return render_template("index.html", services = services)
 
     @app.route("/404")
     def pageNotFound():

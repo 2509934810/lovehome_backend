@@ -1,6 +1,6 @@
 from . import user_bp
 from flask import g, session, render_template, redirect, url_for
-from flask import request
+from flask import request, jsonify
 import os, random
 from hashlib import md5
 from backend.models import Info, db, LoveLineWorker, Service, ecomoStream
@@ -8,7 +8,8 @@ from backend.models import userperferCard, perferCard
 from backend import redis_store
 from datetime import datetime
 import datetime as time
-
+from backend.utils.generatePng import generate
+from backend.utils.generatePay import producerPay
 
 @user_bp.route("/service/req", methods=["GET", "POST"])
 def serviceReq():
@@ -33,7 +34,12 @@ def serviceReq():
                     ),
                 )
                 photo.save(photopath)
-                headPhotoPath = photopath.split("static/")[1]
+                rsp = generate(photopath)
+                if rsp.get("code")== 200:
+                    headPhotoPath=rsp.get("path")
+                    os.remove(photopath)
+                else:
+                    return jsonify({"code": 500})
                 id = md5()
                 id.update("{}{}".format(account, serviceType).encode("utf-8"))
                 serviceLink = LoveLineWorker.query.filter_by(userAc=account).first().id
@@ -154,6 +160,8 @@ def stop():
                 db.session.commit()
                 salary = order.salary - card.cardNum
         # 添加资金流动流
+        rsp = producerPay(account=g.user.account, salaNum=salary)
+        print(dir(rsp))
         econId = md.hexdigest()
         econ.createInfo(id=econId, econNum=salary, serviceType=order.info.serviceType)
         econ.econNum = redis_store.get(f"{g.user.account}_pay").decode("utf-8")

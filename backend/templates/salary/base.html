@@ -38,7 +38,9 @@
                     <li><a href="[[url_for('manage.index')]]">管理服务</a></li>
                     {% endif %}
                 {% endif %}
+                {% if g.user.level > 8 %}
                 <li><a href="[[url_for('manage.salarystream')]]">资金流转</a></li>
+                {% endif %}
                 <li><a href="[[url_for('user.reqLists')]]">投诉邮箱</a></li>
 
                 <li><a>聊天室</a></li>

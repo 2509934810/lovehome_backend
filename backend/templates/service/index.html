@@ -45,7 +45,7 @@
     <table>
         <tr>
             <td>类&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别:</td>
-            <td><a href="#">全部</a></td>
+            <td><a href="[[url_for('service.homeservice')]]">全部</a></td>
             <td><a href="[[url_for('service.homeservice', serviceType='yuesao')]]">月嫂</a></td>
             <td><a href="[[url_for('service.homeservice', serviceType='xiaoshi')]]">保姆</a></td>
             <td><a href="[[url_for('service.homeservice', serviceType='baomu')]]">时间工</a></td>
@@ -90,7 +90,7 @@
     {% for service in services %}
     <li>
         <div>
-        <img src="[[url_for('static', filename=service.head_photo)]]" title="" alt="" width="99%" height="150px">
+        <img src="http://[[avator]]/[[service.head_photo]]" title="" alt="" width="99%" height="150px">
         <div>
             <span>员工类型:
                 {% if  service.serviceType == 1 %}

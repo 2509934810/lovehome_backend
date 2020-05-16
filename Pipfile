@@ -24,6 +24,7 @@ flask-migrate = "*"
 reportlab = "*"
 flask-script = "*"
 uwsgi = "*"
+kafka-python = "*"
 
 [requires]
 python_version = "3.8.0"

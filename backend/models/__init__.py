@@ -35,6 +35,7 @@ class User(db.Model):
     sex = db.Column(db.Boolean, nullable=True)
     age = db.Column(db.Integer, nullable=False, default=0)
     acType = db.Column(db.Boolean, default=False)
+    head_photo = db.Column(db.String(100), nullable=True)
     # service = db.relationship("Service", backref="user", lazy="dynamic")
     avatorLink = db.relationship("Avator", backref="user", lazy="dynamic")
     chatLink = db.relationship("UserLinkRoom", backref="user", lazy="dynamic")
@@ -71,6 +72,7 @@ class User(db.Model):
     salaryeconLink = db.relationship(
         "salaryeCon", backref=db.backref("user"), lazy="dynamic"
     )
+    loginInfoLink = db.relationship("loginTb", backref=db.backref("user"), lazy="dynamic")
 
     def __repr__(self):
         return "<Post %r>" % self.account
@@ -254,15 +256,14 @@ class Salary(db.Model):
 # # add worker table
 
 
-# class loginTb(db.Model):
-#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-#     user_id = db.Column(db.Integer, db.ForeignKey("user.account"))
-#     loginTime = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-#     loginSite = db.Column(db.Text, nullable=False, default="shanxi")
-
-#     def createData(self, userId, loginSite):
-#         self.user_id = userId
-#         self.loginSite = loginSite
+class loginTb(db.Model):
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.String(20), db.ForeignKey("user.account"))
+    loginTime = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    loginSite = db.Column(db.Text, nullable=False, default="shanxi")
+    def createData(self, userId, loginSite):
+        self.user_id = userId
+        self.loginSite = loginSite
 
 
 # create db
@@ -334,6 +335,10 @@ class Service(db.Model):
     def pay(slef):
         self.payTime = datetime.utcnow
         self.orderType = self.ORDERTYPE.get("pay")
+
+
+# class serviceEcon(db.Model):
+
 
 
 class orderResult(db.Model):
