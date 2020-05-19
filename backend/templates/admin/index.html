@@ -18,6 +18,9 @@
             float: left; margin-left: 20px; background-color: green; border-radius: 5px; font-size: 15px; text-align: center;}
         #MainView .MainShow{width: 100%;}
         #MainView .MainShow table{width: 100%; text-align: center;}
+        #MainView .MainShow .pageBtn{margin-top: 10px;}
+        #MainView .MainShow .pageBtn .last{display: block; float: left;}
+        #MainView .MainShow .pageBtn .next{display: block; float: right;}
     </style>
 {% endblock %}
 {% block content %}
@@ -68,7 +71,6 @@
                 <td>激活</td>
                 <td>注册日期</td>
             </tr>
-            {% if users%}
                 {% for user in users %}
                     <tr class="tableData">
                         <td><input type="checkbox" name="check" id="[[user.account]]"></td>
@@ -98,8 +100,18 @@
                         <td>[[user.pub_date]]</td>
                     </tr>
                 {% endfor %}
-            {% endif %}
+                
         </table>
+        <div class="pageBtn">
+            {% if pageNum == 1 %}
+            {%else%}
+                <a class="last" href="[[url_for('admin.index', pageNum=pageNum-1)]]">上一页</a>
+            {% endif %}
+            {% if pageNum == allPage %}
+            {% else %}
+                <a class="next" href="[[url_for('admin.index', pageNum=pageNum+1)]]">下一页</a>
+            {% endif %}
+        </div>
     </div>
 </div>
 {% endblock %}

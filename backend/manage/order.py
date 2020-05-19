@@ -3,6 +3,7 @@ from flask import request, g, jsonify
 from . import manage_bp
 from backend.models import quickOrder, db, Service, orderResult
 from backend.utils.generateOrder import PDFGenerator
+from backend.utils.generatePng import generatepdf
 from hashlib import md5
 import os, datetime
 
@@ -105,9 +106,12 @@ def printorder(id):
     filepath = os.path.join(basePath, "backend/static/img/order/{}/".format(order.id))
     if not os.path.exists(filepath):
         os.makedirs(filepath)
-    print(filepath)
+    # print(filepath)
     pdf = PDFGenerator(filepath=filepath, filename=filename)
     pdf.genTaskPDF(order)
-    filepath = order.id + "/" + filename + ".pdf"
+    filepath = filepath + filename + ".pdf"
     print(filepath)
+    rsp = generatepdf(filepath).get("path")
+    filepath = "http://" + os.getenv("AVATOR_SERVER") + "/" + rsp
+    # print(filepath)
     return jsonify({"code": 200, "data": "{}".format(filepath)})

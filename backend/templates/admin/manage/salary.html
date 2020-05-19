@@ -96,8 +96,7 @@
                 method: 'get'
             }).then(function(rsp){
                 if (rsp.data.code == 200){
-                    pdfPath = baseUrl + "/static/img/" + rsp.data.data
-                    window.location.href=pdfPath
+                    window.location.href=rsp.data.data
                 }
             })
         })

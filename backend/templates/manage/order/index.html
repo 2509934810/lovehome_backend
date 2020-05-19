@@ -84,8 +84,8 @@
                         url: BaseUrl,
                     }).then(function(rsp){
                         if (rsp.data.code == 200){
-                            console.log(rsp.data.data)
-                            window.location.href = location.protocol + "//" + location.host + "/static" + "/img/" +"order/" +  rsp.data.data
+                            // console.log(rsp.data.data)
+                            window.location.href = rsp.data.data
                         }
                     })
                 }

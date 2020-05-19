@@ -7,6 +7,8 @@ import datetime, math, os
 from backend import redis_store
 from hashlib import md5
 from backend.utils.generateEcon import PDFGenerator
+from backend.utils.generatePng import generatepdf
+from sqlalchemy import and_
 
 TIME = {
     "11111111111111111111": 1,
@@ -44,7 +46,6 @@ def spreadSalary():
     if request.method == "POST":
         rst = {"code": 200}
         curDate = datetime.datetime.utcnow().strftime("%Y-%m")
-
         for man in LoveManage.query.all():
             _sendSalary(man.user)
             _savespreadLog(man.user)
@@ -98,6 +99,7 @@ def spreadSalary():
         if flag == True:
             curMonth = datetime.datetime.utcnow().strftime("%Y-%m")
             salary = _sumSalary(curMonth)
+        print(flag)
         return render_template(
             "admin/manage/spreadSalary.html",
             econResult=econResult,
@@ -124,7 +126,7 @@ def _sumSalary(month):
 def _checkSalary():
     curMonth = datetime.datetime.utcnow().strftime("%Y-%m")
     flag = True
-    users = User.query.filter(User.level > 2).all()
+    users = User.query.filter(and_(User.level > 2, User.level < 64)).all()
     for user in users:
         if user.salaryeconLink.filter(salaryeCon.salaryMonth == curMonth).first():
             pass
@@ -388,10 +390,9 @@ def printsalary():
         os.makedirs(filepath)
     doc = PDFGenerator(filename=filename, filepath=filepath)
     doc.genTaskPDF(econs)
-    filepath = (
-        "admin/econstream/{}/".format(datetime.datetime.utcnow().strftime("%Y-%m-01"))
-        + filename
-        + ".pdf"
-    )
-    print(curmonth)
-    return jsonify({"code": 200, "data": filepath})
+    filePath = os.path.join(filepath, "{}.pdf".format(filename))
+    rsp = generatepdf(filePath).get("path")
+    print(filePath, rsp)
+    os.remove(filePath)
+    pdfLink = "http://" + os.getenv("AVATOR_SERVER") + "/" + rsp
+    return jsonify({"code": 200, "data": pdfLink})

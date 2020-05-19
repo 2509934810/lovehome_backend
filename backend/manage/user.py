@@ -6,6 +6,7 @@ from . import manage_bp
 from backend.models import User, db, LoveWorker, LoveLineWorker
 from backend.models import UserAddr
 from backend.utils.generatePng import generate
+from backend import redis_store
 # from sqlalchemy.exc import *
 import random
 import os
@@ -138,19 +139,30 @@ def deleteRel():
 def activedUser():
     user = g.user
     if request.method == "POST":
-        formdata = request.form
-        print(formdata)
-        username = formdata["username"]
-        sex = formdata["sex"]
-        age = formdata["age"]
-        addr = formdata["province"] +"  " + formdata["city"]
-        tele = formdata["telephone"]
-        email = formdata["email"]
-        # 验证效验码
-        photo = request.files.get("upload")
-        fileend = photo.filename.split(".")[-1]
-        if fileend not in ["jpg", "png", "jpeg"]:
-            return redirect(url_for("user.serviceReq"))
+        try:
+            formdata = request.form
+            # print(formdata)
+            username = formdata["username"]
+            sex = formdata["sex"]
+            age = formdata["age"]
+            addr = formdata["province"] +"  " + formdata["city"]
+            tele = formdata["telephone"]
+            email = formdata["email"]
+            # 验证效验码
+            checkNum = formdata["checkNum"]
+            print(user.account)
+            check = redis_store.get("email_{}".format(g.user.account))
+            print(check.decode("utf-8"), checkNum)
+            if check.decode("utf-8") != checkNum:
+                return redirect(url_for("manage.activedUser"))
+            photo = request.files.get("upload")
+            fileend = photo.filename.split(".")[-1]
+            if fileend not in ["jpg", "png", "jpeg"]:
+                return redirect(url_for("manage.activedUser"))
+        except Exception as e:
+            print(e)
+            return redirect(url_for("manage.activedUser"))
+            
         try:
             if username and sex and age and addr and tele and email:
                 buser = User.query.filter_by(account=user.account).first()
@@ -188,6 +200,8 @@ def activedUser():
         finally:
             return redirect(url_for("manage.userInfo"))
     else:
+        if g.user.actived == True:
+            return redirect(url_for("manage.userInfo"))
         province = list(set([addr.province for addr in UserAddr.query.all()]))
         return render_template("manage/user/actived.html", user=user, provinces=province)
 

@@ -9,8 +9,10 @@ import os
 
 class SendMail(object):
     smtp_server = "smtp.qq.com"
-    password = "vdyjzfgpqndodhhc"
-    from_addr = "qq2509934810@163.com"
+    password = "fkgngrwblphqdjah"
+    # from_addr = "qq2509934810@163.com"
+    from_addr = "2509934810@qq.com"
+
 
     def __init__(self, text, sender, receiver, subject, address):
         self.text = text
@@ -30,10 +32,10 @@ class SendMail(object):
         return formataddr((Header(name, "utf-8").encode(), addr))
 
     def send(self):
-        server = smtplib.SMTP_SSL(self.smtp_server, 465)
-        server.set_debuglevel(1)
-        server.login(self.from_addr, self.password)
-        server.sendmail(self.from_addr, [self.to_addr], self.msg.as_string())
+        server = smtplib.SMTP_SLL(self.smtp_server, 465)
+        # server.set_debuglevel(1)
+        server.login("2509934810@qq.com", "fkgngrwblphqdjah")
+        server.sendmail("2509934810@qq.com", [self.to_addr], self.msg.as_string())
         server.close()
 
 

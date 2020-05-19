@@ -2,7 +2,7 @@ from flask import render_template, g, Blueprint, jsonify, request, redirect, url
 from flask import session
 from backend.models import User, db
 from flask_sqlalchemy import sqlalchemy
-
+import math
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
 from .userCrud import *
@@ -35,11 +35,17 @@ def login():
 
 @admin_bp.route("/index")
 def index():
-    user = User.query.all()
-    # print(user)
+    pageNum = request.args.get("pageNum")
+    if pageNum:
+        pageNum = int(pageNum)
+    else:
+        pageNum = 1
+    allUser = User.query.all()
+    allPage = math.ceil(len(allUser)/10)
+    print(allPage, pageNum)
+    user = allUser[(pageNum-1)*10:pageNum*10]
     if user:
-        print(user)
-        return render_template("admin/index.html", users=user)
+        return render_template("admin/index.html",users=user,pageNum=pageNum, allPage = allPage)
     else:
         return render_template("admin/index.html")
 

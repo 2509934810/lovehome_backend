@@ -1,7 +1,6 @@
-import os
+import os, re
 from flask import Flask, render_template, jsonify, session
-from flask import g
-
+from flask import g, request
 # from flask_sqlalchemy import SQLAlchemy
 import click
 from flask.cli import with_appcontext
@@ -11,7 +10,9 @@ from flask_redis import FlaskRedis
 # from flask_celery import Celery
 from flask_cors import CORS
 from backend.models import Info
-
+from backend.utils.generateVal import generate as generateval
+from backend.utils.generaeMail import SendMail
+from backend.utils.generateVal import getRandomStr
 redis_store = FlaskRedis()
 
 
@@ -85,10 +86,36 @@ def create_app(test_config=None):
         else:
             g.user = None
 
+    @app.route("/sendemail")
+    def sendeamil():
+        if g.user is None:
+            return jsonify({"code": 500})
+        SS = ""
+        email = request.args.get("mail")
+        if not re.match(r'^[0-9a-zA-Z_]{0,19}@[0-9a-zA-Z]{1,13}\.[com,cn,net]{1,3}$',email):
+            return jsonify({"code": 500})
+        try:
+            for i in range(6):
+                SS += getRandomStr()
+            mail = SendMail(text=SS, sender="lovehome", receiver="Dear cumtomer", subject="Val", address="{}".format(email))
+            mail.send()
+            redis_store.set("email_{}".format(g.user.account), SS)
+        except Exception as e:
+            print(e)
+            return jsonify({"code": 500})
+        return jsonify({"code": 200})
+    @app.route("/generatePng")
+    def generatePng():
+        SS, pngPath = generateval()
+        print(SS, pngPath)
+        return jsonify({"pngPath": pngPath, "avator": os.getenv("AVATOR_SERVER")})
+
     @app.route("/")
     def index():
         # serviceAddr = request.args.get("serviceAddr")
         # serviceType = Info.SERVICETYPE.get(request.args.get("serviceType"))
+        # SS, pngPath = generateval()
+        # print(SS, pngPath)
         serviceType = None
         if serviceType:
             services = Info.query.filter(db.and_(Info.serviceType==serviceType, Info.access==True)).all()
@@ -100,5 +127,4 @@ def create_app(test_config=None):
     def pageNotFound():
         data = {"code": 404, "info": "page not found"}
         return jsonify(data)
-
     return app

@@ -3,12 +3,14 @@
 {% block style %}
     <style>
         /* .Main{} */
-        .Main .confirmForm{width: 40%; margin: 0 auto; height: 60vh; background-color: pink;}
+        .Main .confirmForm{width: 40%; margin: 0 auto; height: 80vh; background-color: pink;}
         .Main .confirmForm .innerForm{width: 90%; margin: 0 auto; margin-top: 20px;}
         .Main .confirmForm form {}
         .Main .confirmForm form .inputdata{display: grid; grid-template-columns: repeat(12, 1fr); margin-top: 10px; font-size: 20px;}
         .Main .confirmForm form .inputdata label{grid-column-start: 1; grid-column-end: 4; text-align: center;}
         .Main .confirmForm form .inputdata input{grid-column-start: 4; grid-column-end: 12;}
+        .Main .confirmForm form .inputdata .midbtn{grid-column-start: 4; grid-column-end: 8;}
+        .Main .confirmForm form .inputdata .clickBtn{grid-column-start: 9; grid-column-end: 12;}
         .Main .confirmForm form .inputdata .sex{grid-column-start: 4; grid-column-end: 12;}
         .Main .confirmForm form .inputdata .province{grid-column-start: 4; grid-column-end: 6;}
         .Main .confirmForm form .inputdata .city{grid-column-start: 7; grid-column-end: 9;}
@@ -73,13 +75,20 @@
                         <label>
                             邮箱
                         </label>
-                        <input type="email" name="email">
+                        <input class="midbtn" id="email" type="email" name="email">
+                        <input type="button" class="clickBtn" id="sendemail" value="发送">
                     </div>
                     <div class="inputdata">
                         <label>
                             头像
                         </label>
                         <input type="file" name="upload">
+                    </div>
+                    <div class="inputdata">
+                        <label>
+                            验证码
+                        </label>
+                        <input type="text" name="checkNum">
                     </div>
                     <div class="submitdata">
                         <input type="submit" value="提交">
@@ -94,6 +103,24 @@
         $(document).ready(function(){
             var province = document.getElementById("province").value;
             console.log(province)
+
+            $("#sendemail").on("click", function(){
+                var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$"); 
+                email = $("#email").val()
+                if (!reg.test(email)){
+                    alert("请输入正确邮箱格式")
+                }else{
+                    axios({
+                    url: '/sendemail?mail='+email,
+                    method: 'get'
+                    }).then(function(rsp){
+                        if(rsp.data.code==200){
+                            $("#sendemail").attr("disabled", "disabled")
+                            $("#email").attr("readonly", "readonly")
+                        }
+                    })
+                }
+            })
             $("#province").change(function(){
                 province = document.getElementById("province").value
                 axios({
